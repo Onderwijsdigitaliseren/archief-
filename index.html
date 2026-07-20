@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Het Archief — Onopgeloste Zaken</title>
+<style>
+:root{
+  --nacht:#171310;
+  --bureau-d:#241c14;
+  --bureau-l:#332818;
+  --manilla:#c9a86c;
+  --manilla-l:#d9bc82;
+  --manilla-d:#a8894f;
+  --inkt:#2a241c;
+  --stempel:#8e2a22;
+  --messing:#9c8452;
+  --papier:#e6d9b8;
+  --lamp:rgba(255,214,140,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--nacht);
+  font-family:"Courier New",Courier,monospace;
+  color:var(--inkt);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+/* ---- het bureaublad ---- */
+#bureau{
+  position:relative;
+  min-height:100vh;
+  padding:8vh 6vw 12vh;
+  background:
+    radial-gradient(ellipse 130% 90% at 50% -10%, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%),
+    repeating-linear-gradient(93deg, rgba(0,0,0,.10) 0 2px, rgba(0,0,0,0) 2px 7px),
+    repeating-linear-gradient(87deg, rgba(255,255,255,.02) 0 1px, rgba(0,0,0,0) 1px 11px),
+    linear-gradient(180deg, var(--bureau-l) 0%, var(--bureau-d) 55%, #1a140d 100%);
+}
+/* lamplichtkring */
+#bureau::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse 60% 48% at 50% 34%, var(--lamp) 0%, rgba(255,214,140,.05) 45%, rgba(0,0,0,0) 70%);
+  opacity:0;
+  transition:opacity 2.2s ease;
+}
+body.lamp-aan #bureau::before{opacity:1}
+/* stofkorrel */
+#bureau::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:5px 7px;
+  mix-blend-mode:overlay;
+}
+/* ---- archiefkaart / kop ---- */
+#kaart{
+  position:relative;
+  z-index:2;
+  width:min(560px,100%);
+  margin:0 auto 7vh;
+  background:linear-gradient(178deg, var(--papier) 0%, #d9cba6 100%);
+  border:1px solid rgba(0,0,0,.35);
+  box-shadow:0 14px 30px rgba(0,0,0,.55), inset 0 0 40px rgba(120,95,40,.12);
+  padding:26px 30px 22px;
+  transform:rotate(-.6deg);
+  opacity:0;
+  transition:opacity 1.4s ease .8s, transform 1.4s ease .8s;
+}
+body.lamp-aan #kaart{opacity:1;transform:rotate(-.6deg) translateY(0)}
+body:not(.lamp-aan) #kaart{transform:rotate(-.6deg) translateY(10px)}
+#kaart::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:44px;
+  height:2px;
+  background:rgba(142,42,34,.5);
+}
+#kaart h1{
+  font-size:clamp(17px,2.6vw,22px);
+  font-weight:700;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--inkt);
+}
+#kaart .sub{
+  margin-top:14px;
+  font-size:12.5px;
+  letter-spacing:.14em;
+  color:#5a4c34;
+  text-transform:uppercase;
+}
+#kaart .regel{
+  margin-top:16px;
+  font-size:13px;
+  line-height:1.75;
+  color:#3c332400;
+  color:#3c3324;
+}
+/* ---- dossiers ---- */
+#dossiers{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:52px 44px;
+  width:min(980px,100%);
+  margin:0 auto;
+}
+.dossier{
+  position:relative;
+  display:block;
+  text-decoration:none;
+  color:var(--inkt);
+  background:linear-gradient(174deg, var(--manilla-l) 0%, var(--manilla) 46%, var(--manilla-d) 100%);
+  border-radius:3px 3px 4px 4px;
+  box-shadow:0 18px 34px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.25);
+  padding:30px 26px 26px;
+  min-height:214px;
+  transform:rotate(var(--rot,0deg)) translateY(14px);
+  opacity:0;
+  transition:transform .45s cubic-bezier(.22,.9,.3,1.1), box-shadow .45s ease, opacity .9s ease;
+}
+body.lamp-aan .dossier{opacity:1;transform:rotate(var(--rot,0deg)) translateY(0)}
+.dossier:nth-child(3n+1){--rot:-1.4deg}
+.dossier:nth-child(3n+2){--rot:.9deg}
+.dossier:nth-child(3n+3){--rot:-.5deg}
+.dossier:hover,.dossier:focus-visible{
+  transform:rotate(0deg) translateY(-8px) scale(1.015);
+  box-shadow:0 30px 52px rgba(0,0,0,.7), 0 0 60px rgba(255,214,140,.10), inset 0 1px 0 rgba(255,255,255,.3);
+  z-index:5;
+}
+.dossier:focus-visible{outline:2px dashed var(--stempel);outline-offset:6px}
+/* maptab */
+.dossier::before{
+  content:"";
+  position:absolute;
+  top:-14px;left:22px;
+  width:34%;height:16px;
+  background:linear-gradient(180deg, var(--manilla-l), var(--manilla));
+  border-radius:5px 5px 0 0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3);
+}
+/* paperclip */
+.dossier::after{
+  content:"";
+  position:absolute;
+  top:-8px;right:30px;
+  width:12px;height:34px;
+  border:2px solid rgba(70,70,72,.75);
+  border-radius:7px;
+  border-bottom-color:transparent;
+  transform:rotate(4deg);
+}
+.zaaknr{
+  font-size:11.5px;
+  letter-spacing:.26em;
+  color:#6b5836;
+  text-transform:uppercase;
+}
+.zaaktitel{
+  margin-top:14px;
+  font-size:clamp(19px,2.3vw,23px);
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  line-height:1.3;
+  border-bottom:1px solid rgba(42,36,28,.35);
+  padding-bottom:12px;
+}
+.zaakomschrijving{
+  margin-top:14px;
+  font-size:13.5px;
+  line-height:1.7;
+  color:#4a3d28;
+  max-width:44ch;
+}
+.stempel{
+  position:absolute;
+  right:18px;bottom:20px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--stempel);
+  border:2.5px solid var(--stempel);
+  border-radius:3px;
+  padding:5px 10px 4px 13px;
+  transform:rotate(-7deg);
+  opacity:.82;
+  mix-blend-mode:multiply;
+}
+/* lege map — volgende zaak */
+.dossier.leeg{
+  background:linear-gradient(174deg, rgba(217,188,130,.16), rgba(168,137,79,.10));
+  border:1.5px dashed rgba(201,168,108,.45);
+  box-shadow:none;
+  color:rgba(217,188,130,.6);
+  cursor:default;
+}
+.dossier.leeg::before,.dossier.leeg::after{display:none}
+.dossier.leeg:hover{transform:rotate(var(--rot,0deg)) translateY(0) scale(1);box-shadow:none}
+.dossier.leeg .zaaknr{color:rgba(217,188,130,.5)}
+.dossier.leeg .zaaktitel{border-bottom-color:rgba(217,188,130,.25);color:rgba(217,188,130,.65)}
+.dossier.leeg .zaakomschrijving{color:rgba(217,188,130,.45)}
+/* voetregel */
+#voet{
+  position:relative;
+  z-index:2;
+  margin:9vh auto 0;
+  width:min(980px,100%);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(201,168,108,.35);
+  text-align:center;
+}
+@media (max-width:640px){
+  #bureau{padding:6vh 5vw 10vh}
+  #dossiers{gap:40px}
+  .dossier{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){
+  #bureau::before,#kaart,.dossier{transition:none}
+  body:not(.lamp-aan) #kaart{transform:rotate(-.6deg)}
+  .dossier{transform:rotate(var(--rot,0deg))}
+  .dossier:hover{transform:rotate(var(--rot,0deg))}
+}
+</style>
+</head>
+<body>
+<main id="bureau">
+  <header id="kaart">
+    <h1>Het Archief</h1>
+    <div class="sub">Afdeling onopgeloste zaken &mdash; nachtdienst</div>
+    <div class="regel">De lamp brandt. De dossiers liggen klaar. Wie een map opent, neemt de zaak over &mdash; met alles wat daarbij hoort.</div>
+  </header>
+  <section id="dossiers" aria-label="Dossiers"></section>
+  <div id="voet">Archiefkast blijft open &middot; nieuwe zaken worden bijgeschreven</div>
+</main>
+<script>
+"use strict";
+/* ================================================================
+   ZAKEN — voeg hier een zaak toe: één object, klaar.
+   bestand = relatief pad naar het losse html-bestand (GitHub Pages).
+   ================================================================ */
+const ZAKEN = [
+  {
+    nummer: "Dossier 44-C · 03:12",
+    titel: "Villa Meridiaan",
+    omschrijving: "Elias Verhoeven ligt onderaan zijn keldertrap. Het m\u00f3\u00e9t een ongeluk lijken. Jij hebt tot zonsopkomst om te bewijzen dat het dat niet was.",
+    bestand: "MERIDIAAN___Nachtdossier44-C.html",
+    stempel: "Onopgelost"
+  },
+  {
+    nummer: "Zaak 92.4 · 03:12",
+    titel: "Nachtfrequentie",
+    omschrijving: "Anthracietstad, de nacht van 14 op 15 februari. Iedereen in dit gebouw heeft iets te verbergen \u2014 en de radio blijft doorspelen op 92.4 FM.",
+    bestand: "nachtfrequentie.html",
+    stempel: "Onopgelost"
+  }
+];
+
+function maakDossier(zaak){
+  const a = document.createElement("a");
+  a.className = "dossier";
+  a.href = zaak.bestand;
+  a.innerHTML =
+    '<div class="zaaknr"></div>' +
+    '<div class="zaaktitel"></div>' +
+    '<div class="zaakomschrijving"></div>' +
+    '<div class="stempel"></div>';
+  a.querySelector(".zaaknr").textContent = zaak.nummer;
+  a.querySelector(".zaaktitel").textContent = zaak.titel;
+  a.querySelector(".zaakomschrijving").textContent = zaak.omschrijving;
+  a.querySelector(".stempel").textContent = zaak.stempel || "Onopgelost";
+  return a;
+}
+
+function maakLegeMap(){
+  const d = document.createElement("div");
+  d.className = "dossier leeg";
+  d.setAttribute("aria-hidden","true");
+  d.innerHTML =
+    '<div class="zaaknr">Zaak \u2014\u2014</div>' +
+    '<div class="zaaktitel">In voorbereiding</div>' +
+    '<div class="zaakomschrijving">Deze map is nog leeg. Het archief groeit.</div>';
+  return d;
+}
+
+function renderArchief(){
+  const houder = document.getElementById("dossiers");
+  ZAKEN.forEach(function(z){ houder.appendChild(maakDossier(z)); });
+  houder.appendChild(maakLegeMap());
+}
+
+window.renderArchief = renderArchief;
+window.ZAKEN = ZAKEN;
+
+document.addEventListener("DOMContentLoaded", function(){
+  renderArchief();
+  requestAnimationFrame(function(){
+    setTimeout(function(){ document.body.classList.add("lamp-aan"); }, 120);
+  });
+});
+</script>
+</body>
+</html>

@@ -95,7 +95,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   animation:onair 1.6s infinite;vertical-align:middle}
 
 /* scène */
-#stage{flex:1;position:relative;overflow:hidden}
+#stage{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--ink)}
+#stage.fitBox #scene{position:relative;inset:auto;margin:auto;background:var(--ink)}
 #scene{position:absolute;inset:0;transition:opacity .5s,transform .8s}
 #scene.fade{opacity:0;transform:scale(1.03)}
 .roomBase{position:absolute;inset:0}
@@ -384,6 +385,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   .roomDesc{display:none}
   .roomTitle{bottom:64px;font-size:24px}
   #invHint{display:none}
+  #topbar{padding:7px 12px;gap:8px}
+  #doors{padding:6px 10px;gap:6px}
+  .door{padding:7px 10px;font-size:10.5px}
+}
+@media(orientation:portrait) and (max-width:480px){
+  #topbar{padding:6px 10px}
+  .roomTitle{bottom:14px;font-size:19px;letter-spacing:.08em}
+  .roomTextBar{height:74px}
 }
 </style>
 </head>
@@ -995,7 +1004,27 @@ function renderRoom(){
       if(h.sus){startDialog(h.sus);}else{HOT[h.id]&&HOT[h.id]();}
       renderRoom();});
   });
+  fitScene();
 }
+/* Portret/mobiel: laat de hele kamer passen (letterbox) i.p.v. bijsnijden,
+   zodat op verticaal beeldscherm geen hotspots buiten beeld vallen. */
+function fitScene(){
+  const stage=$('#stage'),sc=$('#scene');if(!stage||!sc)return;
+  const portrait=window.innerWidth<=window.innerHeight;
+  if(portrait){
+    const availW=stage.clientWidth||window.innerWidth,availH=stage.clientHeight||window.innerHeight;
+    const ratio=1000/560;let w=availW,h=w/ratio;
+    if(h>availH){h=availH;w=h*ratio;}
+    sc.style.width=Math.round(w)+'px';sc.style.height=Math.round(h)+'px';
+    stage.classList.add('fitBox');
+  }else{
+    sc.style.width='';sc.style.height='';
+    stage.classList.remove('fitBox');
+  }
+}
+window.fitScene=fitScene;
+window.addEventListener('resize',()=>fitScene());
+window.addEventListener('orientationchange',()=>setTimeout(fitScene,250));
 window.renderRoom=renderRoom;
 </script>
 <script>
@@ -2025,7 +2054,7 @@ function sFigSit(x,y,sc,o){
   <circle cx="${x}" cy="${y+head*.7}" r="${head*.72}" fill="#1c222d" stroke="${rim}" stroke-width="1"/>${hair}${extra}`;
 }
 /* markerstip voor hotspots */
-function sDot(x,y){return `<circle class="hsDot" cx="${x}" cy="${y}" r="5" fill="#d2a44c"/><circle class="hsDot2" cx="${x}" cy="${y}" r="10" fill="none" stroke="rgba(210,164,76,.5)" stroke-width="1.5"/>`;}
+function sDot(x,y){return `<circle cx="${x}" cy="${y}" r="26" fill="transparent"/><circle class="hsDot" cx="${x}" cy="${y}" r="5" fill="#d2a44c"/><circle class="hsDot2" cx="${x}" cy="${y}" r="10" fill="none" stroke="rgba(210,164,76,.5)" stroke-width="1.5"/>`;}
 /* stoomsliert */
 function sSteam(x,y){return `<path d="M${x} ${y} q-5 -10 0 -18 q5 -8 0 -18" stroke="rgba(220,230,240,.28)" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;}
 
@@ -2563,6 +2592,7 @@ SCENES.archief=function(){
   <rect width="1000" height="560" fill="url(#gShadow)" opacity=".12"/>`;
 };
 window.SCENES=SCENES;
+
 
 
 

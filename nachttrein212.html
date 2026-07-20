@@ -69,13 +69,14 @@ body{
   0%{transform:translateY(0)}18%{transform:translateY(3px) translateX(-1px)}
   40%{transform:translateY(-2px)}70%{transform:translateY(1px)}100%{transform:translateY(0)}
 }
-#scene{position:absolute;inset:0;animation:deinen 4.6s ease-in-out infinite}
+#scene{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;animation:deinen 4.6s ease-in-out infinite}
+#scene::-webkit-scrollbar{display:none}
 @keyframes deinen{
   0%,100%{transform:translateY(0) rotate(0deg)}
   30%{transform:translateY(-1.5px) rotate(.08deg)}
   65%{transform:translateY(1px) rotate(-.06deg)}
 }
-.wagonscene{position:absolute;inset:0}
+.wagonscene{position:relative;height:100%;aspect-ratio:1200/620;min-width:100%}
 .wagonscene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* SVG-animaties */
 .lampzwaai{transform-box:fill-box;transform-origin:50% 0;animation:zwaai 5.2s ease-in-out infinite}
@@ -110,7 +111,7 @@ body{
 .kliklaag{position:absolute;inset:0}
 .klik{
   position:absolute;cursor:pointer;background:transparent;border:0;
-  min-width:44px;min-height:44px;
+  min-width:44px;min-height:44px;touch-action:manipulation;
 }
 .klik:focus-visible{outline:none;box-shadow:inset 0 0 0 2px rgba(212,176,118,.85);border-radius:4px}
 .klik:hover{box-shadow:inset 0 0 0 2px rgba(212,176,118,.45);border-radius:4px}
@@ -342,10 +343,23 @@ body{
 .eindtitel.goed{color:#9db87d}
 .eindtitel.fout{color:#d99a94}
 @media (max-width:640px){
-  #kop h1{font-size:12px;letter-spacing:.18em}
+  #kop{gap:8px;padding:8px 10px 6px;flex-wrap:nowrap}
+  #kop h1{font-size:11.5px;letter-spacing:.14em}
   #kop .route{display:none}
-  #overlaybox{padding:16px 14px 20px}
+  #klok{font-size:12px;padding:2px 6px;letter-spacing:.08em}
+  .kopknop{padding:4px 8px;font-size:10.5px}
+  #overlaybox{padding:16px 14px 20px;max-height:86dvh}
+  #overlaybox h2{font-size:14.5px;letter-spacing:.16em}
+  .papierdoc{padding:14px 14px;font-size:12.5px}
   .persoon .naamkaart{font-size:9px}
+  .slotwiel button{width:40px;height:32px}
+  .slotcijfer{width:40px;height:44px;font-size:22px}
+  .morseteken{min-width:72px;font-size:17px;padding:6px 8px}
+  .morsekeuzes button{width:32px;height:32px}
+  .fles{width:82px;font-size:10.5px}
+  .navwagon{min-width:86px;height:40px;font-size:9px}
+  #navloc{width:70px;height:40px}
+  #melding{font-size:12px;max-width:92vw;bottom:4%}
 }
 </style>
 </head>
@@ -1262,6 +1276,10 @@ function toonDocument(id){
 function renderScene(){
   scene.innerHTML=SCENES[S.wagon]();
   document.querySelectorAll('.navwagon').forEach(n=>n.classList.toggle('actief',n.dataset.wagon===S.wagon));
+  /* in portret: begin in het midden van de wagon */
+  (window.requestAnimationFrame||function(cb){setTimeout(cb,16);})(()=>{
+    if(scene.scrollWidth>scene.clientWidth+4)scene.scrollLeft=(scene.scrollWidth-scene.clientWidth)/2;
+  });
 }
 function renderNav(){
   $('#navloc').innerHTML=LOCSVG;
@@ -1687,7 +1705,11 @@ document.addEventListener('click',e=>{
   }
   if(t.id==='overlaysluit'){sluitOverlay();return;}
   const d=t.dataset;
-  if(d.actie==='start'){sluitOverlay();return;}
+  if(d.actie==='start'){
+    sluitOverlay();
+    if(window.innerHeight>window.innerWidth*1.02)meld('Veeg horizontaal om de hele wagon te bekijken.');
+    return;
+  }
   if(d.actie==='herstart'){herstart();return;}
   if(d.actie==='kofferslot'){toonKofferslot();return;}
   if(d.actie==='probeer-slot'){probeerSlot();return;}

@@ -42,11 +42,11 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* ============ intro ============ */
 #intro{position:fixed;inset:0;z-index:80;background:var(--ink);display:flex;align-items:center;justify-content:center;overflow:hidden}
 #intro.gone{display:none}
-.introScene{position:absolute;inset:0;opacity:0;transition:opacity 1.4s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.introScene{position:absolute;inset:0;opacity:0;transition:opacity 1.4s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 6vw;overflow-wrap:break-word}
 .introScene.on{opacity:1}
-.introKicker{font-family:var(--mono);color:var(--dim);letter-spacing:.35em;font-size:12px;text-transform:uppercase;margin-bottom:18px}
-.introTitle{font-family:var(--serif);font-size:clamp(34px,7vw,74px);letter-spacing:.18em;color:var(--gold);text-shadow:0 0 40px rgba(210,164,76,.35);font-weight:400}
-.introSub{font-family:var(--serif);font-style:italic;color:var(--steel);margin-top:14px;font-size:clamp(14px,2.2vw,19px)}
+.introKicker{font-family:var(--mono);color:var(--dim);letter-spacing:clamp(.14em,2vw,.35em);font-size:12px;text-transform:uppercase;margin-bottom:18px;padding:0 2px}
+.introTitle{font-family:var(--serif);font-size:clamp(30px,7vw,74px);letter-spacing:clamp(.06em,2.2vw,.18em);color:var(--gold);text-shadow:0 0 40px rgba(210,164,76,.35);font-weight:400;padding:0 4px;max-width:96vw;overflow-wrap:break-word}
+.introSub{font-family:var(--serif);font-style:italic;color:var(--steel);margin-top:14px;font-size:clamp(14px,2.2vw,19px);padding:0 3px}
 .introBody{font-family:var(--mono);color:var(--cream);max-width:620px;line-height:1.9;font-size:clamp(13px,1.8vw,16px);white-space:pre-wrap;text-align:left}
 .onairLamp{margin:26px auto 0;width:150px;padding:9px 0;border:1px solid var(--red);border-radius:4px;
   font-family:var(--sans);font-weight:700;letter-spacing:.4em;color:var(--redhi);font-size:14px;text-indent:.4em;
@@ -246,6 +246,50 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .gBtn.red{color:var(--redhi);border-color:rgba(200,60,45,.4)}
 .gBtn.red:hover{background:rgba(200,60,45,.1);border-color:var(--redhi);box-shadow:0 0 16px rgba(200,60,45,.25)}
 .gBtn.dim{color:var(--dim)}
+
+/* ============ ONDERZOEKSBORD ============ */
+#board{position:fixed;inset:0;z-index:72;display:none;flex-direction:column;
+  background:
+    radial-gradient(ellipse at 20% 15%,rgba(120,86,50,.18),transparent 55%),
+    radial-gradient(ellipse at 80% 85%,rgba(90,64,38,.15),transparent 55%),
+    linear-gradient(155deg,#3a2b1c 0%,#2b2015 55%,#221a11 100%)}
+#board.on{display:flex;animation:ovlIn .3s}
+#boardNoise{position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>')}
+#boardHead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;background:linear-gradient(180deg,rgba(10,8,5,.55),transparent)}
+#boardTitle{font-family:var(--serif);font-size:clamp(18px,3vw,26px);letter-spacing:.3em;color:var(--goldhi);
+  text-shadow:0 2px 12px rgba(0,0,0,.7)}
+#boardX{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--cream);
+  border:1px solid rgba(233,225,204,.35);border-radius:2px;padding:8px 16px;background:rgba(10,8,5,.35);transition:all .2s}
+#boardX:hover{border-color:var(--redhi);color:var(--redhi);background:rgba(200,60,45,.12)}
+#boardArea{position:relative;flex:1;overflow:hidden;touch-action:none}
+#boardSvg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#boardSvg path{pointer-events:stroke;cursor:pointer}
+#boardPinsLayer{position:absolute;inset:0;z-index:2}
+#boardHint{position:relative;z-index:3;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:rgba(233,225,204,.55);
+  text-align:center;padding:9px 16px;background:linear-gradient(0deg,rgba(10,8,5,.55),transparent)}
+#boardTray{position:relative;z-index:3;display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:center;
+  padding:12px 16px;min-height:46px;background:rgba(8,6,4,.4);border-top:1px solid rgba(233,225,204,.14);
+  max-height:26vh;overflow-y:auto}
+.trayPill{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--goldhi);
+  border:1px solid rgba(210,164,76,.45);border-radius:20px;padding:7px 14px;background:rgba(210,164,76,.08);
+  transition:all .2s;white-space:nowrap}
+.trayPill:hover{background:rgba(210,164,76,.2);border-color:var(--goldhi);transform:translateY(-1px)}
+.trayEmpty{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:rgba(233,225,204,.4);text-transform:uppercase;padding:7px 4px}
+.pin{position:absolute;width:150px;background:linear-gradient(175deg,#f2e9d0,#ddd0ac);color:#2a2419;
+  border-radius:2px;box-shadow:0 8px 18px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.3);
+  padding:16px 10px 10px;cursor:grab;user-select:none;touch-action:none;transition:box-shadow .15s;z-index:2}
+.pin:active{cursor:grabbing}
+.pin.dragging{box-shadow:0 16px 34px rgba(0,0,0,.6);z-index:20;transition:none}
+.pin.linking{box-shadow:0 0 0 2px var(--redhi),0 10px 22px rgba(0,0,0,.5)}
+.pin::before{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;
+  border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7a68,var(--red) 70%);
+  box-shadow:0 2px 4px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.4)}
+.pinTag{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#8a6c3a;margin-bottom:4px}
+.pinName{font-family:var(--serif);font-size:12.5px;line-height:1.35;color:#2a2419}
+.pinX{position:absolute;top:2px;right:4px;font-size:12px;color:rgba(42,36,25,.4);padding:4px 6px;line-height:1}
+.pinX:hover{color:var(--red)}
 .gBtn:disabled{opacity:.35;cursor:default;box-shadow:none}
 
 /* papier / documenten */
@@ -388,6 +432,10 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   #topbar{padding:7px 12px;gap:8px}
   #doors{padding:6px 10px;gap:6px}
   .door{padding:7px 10px;font-size:10.5px}
+  .pin{width:118px;padding:13px 8px 8px}
+  .pinName{font-size:11px}
+  #boardTitle{letter-spacing:.18em}
+  #boardHint{font-size:9px;line-height:1.5}
 }
 @media(orientation:portrait) and (max-width:480px){
   #topbar{padding:6px 10px}
@@ -418,7 +466,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   </div>
   <div class="introScene" id="is3">
     <div class="introKicker">Uw opdracht</div>
-    <div class="introTitle" style="font-size:clamp(22px,4vw,38px)">ZOEK UIT WIE DE MOORDENAAR IS</div>
+    <div class="introTitle" style="font-size:clamp(20px,5.5vw,38px)">ZOEK UIT WIE DE MOORDENAAR IS</div>
     <div class="introSub">Iedereen in dit gebouw heeft iets te verbergen.<br>Ook de doden.</div>
     <button class="introBtn" id="startBtn">Betreed het gebouw</button>
   </div>
@@ -440,6 +488,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <button class="tbBtn" id="btnNotes">✎ NOTITIES<span class="badge" id="bNotes"></span></button>
     <button class="tbBtn" id="btnDossier">◈ DOSSIER<span class="badge" id="bDossier"></span></button>
     <button class="tbBtn" id="btnSus">◉ VERDACHTEN<span class="badge" id="bSus"></span></button>
+    <button class="tbBtn" id="btnBoard">📌 BORD</button>
     <button class="tbBtn" id="btnSnd">♪</button>
     <button class="tbBtn" id="btnReset">⟲</button>
     <div id="clock">03:12</div>
@@ -475,6 +524,21 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   <div class="panelBody" id="susBody"></div>
 </div>
 
+<!-- ============ ONDERZOEKSBORD ============ -->
+<div id="board">
+  <div id="boardNoise"></div>
+  <div id="boardHead">
+    <div id="boardTitle">ONDERZOEKSBORD</div>
+    <button id="boardX">SLUIT ✕</button>
+  </div>
+  <div id="boardArea">
+    <svg id="boardSvg"></svg>
+    <div id="boardPinsLayer"></div>
+  </div>
+  <div id="boardTray"></div>
+  <div id="boardHint">Sleep kaartjes om ze te verplaatsen &middot; klik twee kaartjes na elkaar om een draad te trekken &middot; klik een draad om hem te verwijderen &middot; ✕ op een kaartje haalt het van het bord</div>
+</div>
+
 <!-- ============ OVERLAY ============ -->
 <div id="ovl">
   <div id="ovlBox">
@@ -497,7 +561,8 @@ const DEFSTATE=()=>({
   chapter:1, room:'studio', inv:[], sel:null,
   evidence:[], notes:[], timeline:[],
   flags:{}, hs:{}, talked:{}, muted:false,
-  clockMin:192 /* 03:12 */
+  clockMin:192, /* 03:12 */
+  boardPins:{}, boardLinks:[]
 });
 let S=DEFSTATE();
 window.S=S;
@@ -540,6 +605,14 @@ function sfx(kind){
     o.connect(gg);o2.connect(gg);o.start(t+off);o.stop(t+off+.36);o2.start(t+off);o2.stop(t+off+.36);});}
   else if(kind==='tone'&&arguments[1]){const o=a.createOscillator();o.type='sine';o.frequency.setValueAtTime(arguments[1],t);
     g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+.28);o.connect(g);o.start(t);o.stop(t+.3);}
+  else if(kind==='paper'){const len=a.sampleRate*.22,b=a.createBuffer(1,len,a.sampleRate),dd=b.getChannelData(0);
+    for(let i=0;i<len;i++){const env=Math.pow(1-i/len,1.6);dd[i]=(Math.random()*2-1)*env*.8;}
+    const s=a.createBufferSource();s.buffer=b;const f=a.createBiquadFilter();f.type='highpass';f.frequency.value=1200;
+    g.gain.setValueAtTime(.12,t);s.connect(f);f.connect(g);s.start(t);}
+  else if(kind==='string'){const o=a.createOscillator();o.type='triangle';o.frequency.setValueAtTime(660,t);
+    o.frequency.exponentialRampToValueAtTime(880,t+.05);o.frequency.exponentialRampToValueAtTime(740,t+.16);
+    g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.05,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.32);
+    o.connect(g);o.start(t);o.stop(t+.34);}
 }
 window.sfx=sfx;
 
@@ -606,6 +679,161 @@ window.advanceClock=advanceClock;
 function flag(k,v){S.flags[k]=(v===undefined?true:v);save();}
 function has(k){return !!S.flags[k];}
 window.flag=flag;window.has=has;
+
+/* =====================================================================
+   ONDERZOEKSBORD — vrij denk-hulpmiddel, geen invloed op de oplossing
+   ===================================================================== */
+const clampNum=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+let boardLinkingId=null, boardLastLinkKey=null;
+
+function openBoard(){$('#board').classList.add('on');boardLinkingId=null;renderBoard();}
+function closeBoard(){$('#board').classList.remove('on');boardLinkingId=null;}
+window.openBoard=openBoard;window.closeBoard=closeBoard;
+
+function pinEvidence(id){
+  if(S.boardPins[id]||!EV[id])return;
+  S.boardPins[id]={x:clampNum(14+Math.random()*72,10,90),y:clampNum(16+Math.random()*58,12,88),rot:Math.round(Math.random()*16-8)};
+  save();sfx('paper');
+  renderBoard();
+}
+window.pinEvidence=pinEvidence;
+
+function unpinEvidence(id){
+  delete S.boardPins[id];
+  S.boardLinks=S.boardLinks.filter(([a,b])=>a!==id&&b!==id);
+  if(boardLinkingId===id)boardLinkingId=null;
+  save();renderBoard();
+}
+window.unpinEvidence=unpinEvidence;
+
+function boardLinkClick(id,pinEl){
+  if(!boardLinkingId){
+    boardLinkingId=id;pinEl.classList.add('linking');return;
+  }
+  const prevEl=$('#boardPinsLayer').querySelector('.pin[data-id="'+boardLinkingId+'"]');
+  if(boardLinkingId===id){
+    if(prevEl)prevEl.classList.remove('linking');
+    boardLinkingId=null;return;
+  }
+  const exists=S.boardLinks.some(([a,b])=>(a===boardLinkingId&&b===id)||(a===id&&b===boardLinkingId));
+  if(!exists){
+    S.boardLinks.push([boardLinkingId,id]);
+    boardLastLinkKey=boardLinkingId+'|'+id;
+    save();sfx('string');
+  }
+  if(prevEl)prevEl.classList.remove('linking');
+  boardLinkingId=null;
+  drawBoardLinks();
+}
+
+function makePinDraggable(pinEl,id){
+  let dragging=false,moved=false,startX=0,startY=0,origX=0,origY=0;
+  pinEl.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.pinX'))return;
+    dragging=true;moved=false;startX=e.clientX;startY=e.clientY;
+    const p=S.boardPins[id];origX=p.x;origY=p.y;
+    pinEl.classList.add('dragging');
+    try{pinEl.setPointerCapture&&pinEl.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  pinEl.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
+    if(!moved)return;
+    const rect=$('#boardArea').getBoundingClientRect();
+    const w=rect.width||1,h=rect.height||1;
+    const nx=clampNum(origX+dx/w*100,4,96),ny=clampNum(origY+dy/h*100,6,94);
+    S.boardPins[id].x=nx;S.boardPins[id].y=ny;
+    pinEl.style.left=nx+'%';pinEl.style.top=ny+'%';
+    drawBoardLinks();
+  });
+  const endDrag=e=>{
+    if(!dragging)return;
+    dragging=false;pinEl.classList.remove('dragging');
+    if(moved)save();
+    pinEl._justDragged=moved;
+    setTimeout(()=>{pinEl._justDragged=false;},0);
+  };
+  pinEl.addEventListener('pointerup',endDrag);
+  pinEl.addEventListener('pointercancel',endDrag);
+  pinEl.addEventListener('click',()=>{
+    if(pinEl._justDragged)return;
+    boardLinkClick(id,pinEl);
+  });
+}
+
+function drawBoardLinks(){
+  const svg=$('#boardSvg');if(!svg)return;
+  const rect=$('#boardArea').getBoundingClientRect();
+  const w=rect.width||1,h=rect.height||1;
+  svg.innerHTML='';
+  S.boardLinks.forEach(([a,b])=>{
+    const pa=S.boardPins[a],pb=S.boardPins[b];if(!pa||!pb)return;
+    const x1=pa.x/100*w,y1=pa.y/100*h,x2=pb.x/100*w,y2=pb.y/100*h;
+    const dist=Math.abs(x2-x1);
+    const sag=clampNum(dist*.22,26,110);
+    const mx=(x1+x2)/2,my=(y1+y2)/2+sag;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`);
+    p.setAttribute('fill','none');
+    p.setAttribute('stroke','#c0392b');
+    p.setAttribute('stroke-width','2.4');
+    p.setAttribute('stroke-linecap','round');
+    p.style.filter='drop-shadow(0 2px 3px rgba(0,0,0,.6))';
+    p.style.pointerEvents='stroke';
+    if(boardLastLinkKey===(a+'|'+b)){
+      p.style.strokeDasharray='1000';p.style.strokeDashoffset='1000';
+      p.style.transition='none';
+      requestAnimationFrame(()=>{p.style.transition='stroke-dashoffset .7s ease';p.style.strokeDashoffset='0';});
+      boardLastLinkKey=null;
+    }
+    p.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      S.boardLinks=S.boardLinks.filter(pair=>!(pair[0]===a&&pair[1]===b));
+      save();sfx('tick');drawBoardLinks();
+    });
+    svg.appendChild(p);
+  });
+}
+window.drawBoardLinks=drawBoardLinks;
+
+function renderBoard(){
+  const tray=$('#boardTray');if(!tray)return;
+  tray.innerHTML='';
+  const unpinned=S.evidence.filter(id=>!S.boardPins[id]);
+  if(!S.evidence.length){
+    tray.appendChild(el('div','trayEmpty','NOG GEEN BEWIJS OM OP TE HANGEN'));
+  }else if(!unpinned.length){
+    tray.appendChild(el('div','trayEmpty','AL HET BEWIJS HANGT OP HET BORD'));
+  }else{
+    unpinned.forEach(id=>{
+      const nm=EV[id]?EV[id].name:id;
+      const p=el('button','trayPill','+ '+nm);
+      p.addEventListener('click',()=>pinEvidence(id));
+      tray.appendChild(p);
+    });
+  }
+  const layer=$('#boardPinsLayer');layer.innerHTML='';
+  Object.keys(S.boardPins).forEach(id=>{
+    if(!EV[id]){delete S.boardPins[id];return;}
+    const pos=S.boardPins[id];
+    const pinEl=el('div','pin');
+    pinEl.dataset.id=id;
+    pinEl.style.left=pos.x+'%';pinEl.style.top=pos.y+'%';
+    pinEl.style.transform=`translate(-50%,-50%) rotate(${pos.rot}deg)`;
+    const tag=(EV[id].tags&&EV[id].tags[0])||'bewijs';
+    pinEl.innerHTML=`<span class="pinTag">${tag}</span><div class="pinName">${EV[id].name}</div><button class="pinX">✕</button>`;
+    layer.appendChild(pinEl);
+    makePinDraggable(pinEl,id);
+    pinEl.querySelector('.pinX').addEventListener('click',ev=>{ev.stopPropagation();unpinEvidence(id);});
+  });
+  drawBoardLinks();
+}
+window.renderBoard=renderBoard;
+
+$('#btnBoard')&&$('#btnBoard').addEventListener('click',openBoard);
+$('#boardX')&&$('#boardX').addEventListener('click',closeBoard);
+window.addEventListener('resize',()=>{if($('#board')&&$('#board').classList.contains('on'))drawBoardLinks();});
 </script>
 <script>
 'use strict';

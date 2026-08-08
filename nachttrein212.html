@@ -139,7 +139,7 @@ body{
 .persoon:hover svg,.persoon:focus-visible svg{filter:drop-shadow(0 0 14px rgba(212,176,118,.5))}
 .persoon:focus-visible{outline:none}
 .persoon .naamkaart{
-  position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
   font-size:10px;letter-spacing:.14em;color:var(--messing-l);
   background:rgba(7,11,20,.9);border:1px solid rgba(184,147,90,.45);
   padding:2px 8px;border-radius:2px;white-space:nowrap;text-transform:uppercase;
@@ -342,7 +342,51 @@ body{
 .eindtitel{font-family:Georgia,serif;font-size:22px;letter-spacing:.2em;text-transform:uppercase;text-align:center;margin:8px 0 16px}
 .eindtitel.goed{color:#9db87d}
 .eindtitel.fout{color:#d99a94}
+/* ---------- onderzoeksbord ---------- */
+#bord{position:fixed;inset:0;z-index:55;display:none;flex-direction:column;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 30%, #3a2c1c 0%, #2a2014 55%, #1c1509 100%);
+}
+#bord.open{display:flex}
+#bordkop{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:12px 18px;
+  border-bottom:1px solid rgba(184,147,90,.35);background:rgba(7,11,20,.35)}
+#bordkop h2{font-family:Georgia,serif;font-size:15px;letter-spacing:.3em;color:var(--messing-l);text-transform:uppercase}
+#bordsluit{margin-left:auto}
+#bordvlak{flex:1 1 auto;position:relative;overflow:hidden;touch-action:none}
+#borddraden{position:absolute;inset:0;width:100%;height:100%}
+.draad{fill:none;stroke:#a32620;stroke-width:2.6;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55));cursor:pointer;pointer-events:visibleStroke}
+.draadhit{fill:none;stroke:transparent;stroke-width:14;cursor:pointer;pointer-events:visibleStroke}
+.draad.nieuw{stroke-dasharray:1;stroke-dashoffset:1;animation:draadtrek .55s ease-out forwards}
+@keyframes draadtrek{to{stroke-dashoffset:0}}
+.pin{position:absolute;width:126px;padding:16px 10px 10px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+  background:linear-gradient(168deg,#efe6cd 0%,#ddd0ab 100%);color:var(--inkt);
+  box-shadow:0 5px 12px rgba(0,0,0,.55);border-radius:1px}
+.pin:active{cursor:grabbing}
+.pin::before{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:13px;height:13px;border-radius:50%;
+  background:radial-gradient(circle at 35% 32%,#e06258 0%,#a32620 55%,#6e140f 100%);
+  box-shadow:0 2px 3px rgba(0,0,0,.5)}
+.pin .pincat{font-family:"Courier New",monospace;font-size:8.5px;letter-spacing:.16em;color:#6b5b3f;text-transform:uppercase}
+.pin .pinnaam{font-family:Georgia,serif;font-size:12.5px;line-height:1.25;margin-top:3px}
+.pin.linking{box-shadow:0 5px 12px rgba(0,0,0,.55),0 0 0 2px #a32620,0 0 14px rgba(163,38,32,.6)}
+.pinx{position:absolute;top:2px;right:3px;width:20px;height:20px;border:0;background:transparent;
+  color:#8a1d16;font-size:12px;cursor:pointer;font-family:inherit;line-height:1}
+.pinx:hover{color:#c0392b}
+#bordtray{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  padding:10px 16px;background:rgba(7,11,20,.5);border-top:1px solid rgba(184,147,90,.35);
+  max-height:26vh;overflow-y:auto}
+.trayknop{font-family:inherit;font-size:11px;letter-spacing:.05em;color:var(--papier);
+  background:rgba(233,221,192,.08);border:1px solid rgba(184,147,90,.45);border-radius:12px;
+  padding:5px 12px;cursor:pointer}
+.trayknop:hover,.trayknop:focus-visible{background:rgba(233,221,192,.18);outline:none}
+.trayleeg{font-size:10.5px;letter-spacing:.18em;color:#7c8698}
+#bordhint{flex:0 0 auto;padding:6px 16px 10px;font-size:10px;letter-spacing:.08em;color:#8fa0b8;
+  background:rgba(7,11,20,.5);text-align:center}
 @media (max-width:640px){
+  .pin{width:104px}
+  #bordhint{font-size:9px}
+
   #kop{gap:8px;padding:8px 10px 6px;flex-wrap:nowrap}
   #kop h1{font-size:11.5px;letter-spacing:.14em}
   #kop .route{display:none}
@@ -351,7 +395,7 @@ body{
   #overlaybox{padding:16px 14px 20px;max-height:86dvh}
   #overlaybox h2{font-size:14.5px;letter-spacing:.16em}
   .papierdoc{padding:14px 14px;font-size:12.5px}
-  .persoon .naamkaart{font-size:9px}
+  .persoon .naamkaart{font-size:9.5px}
   .slotwiel button{width:40px;height:32px}
   .slotcijfer{width:40px;height:44px;font-size:22px}
   .morseteken{min-width:72px;font-size:17px;padding:6px 8px}
@@ -372,6 +416,7 @@ body{
       <span id="klok">00:41</span>
       <button class="kopknop" id="knop-geluid" type="button" aria-pressed="false" title="Rijgeluid">&#9836;</button>
       <button class="kopknop" id="knop-dossier" type="button">Dossier</button>
+      <button class="kopknop" id="knop-bord" type="button">Bord</button>
       <button class="kopknop" id="knop-beschuldig" type="button">Beschuldiging</button>
       <button class="kopknop" id="knop-reset" type="button" title="Opnieuw instappen">&#8635;</button>
     </div>
@@ -381,6 +426,12 @@ body{
     <div id="melding" role="status"></div>
   </div>
   <nav id="treinnav" aria-label="Wagons"><div id="navloc"></div></nav>
+</div>
+<div id="bord" role="dialog" aria-modal="true" aria-label="Onderzoeksbord">
+  <div id="bordkop"><h2>Onderzoeksbord</h2><button class="kopknop" id="bordsluit" type="button">Sluit</button></div>
+  <div id="bordvlak"><svg id="borddraden" aria-hidden="true"></svg></div>
+  <div id="bordtray"></div>
+  <div id="bordhint">tik een stuk in de la om het op te hangen · sleep om te schikken · tik twee kaartjes na elkaar voor een rode draad · tik een draad om hem te knippen</div>
 </div>
 <div id="overlay" role="dialog" aria-modal="true">
   <div id="overlaybox">
@@ -398,7 +449,8 @@ let S={
   gevonden:[],gesteld:{},
   kofferOpen:false,tasKlaar:false,tijdlijnKlaar:false,
   loper:false,morseKlaar:false,
-  pogingen:0,intro:false,klaar:null
+  pogingen:0,intro:false,klaar:null,
+  boardPins:{},boardLinks:[]
 };
 const STATIONS=['Frankfurt','W\u00fcrzburg','N\u00fcrnberg','Passau','WENEN'];
 
@@ -554,55 +606,113 @@ function gangBasis(){
 
 /* — personen-silhouetten (per figuur herkenbaar) — */
 const FIG={
-  clara:`<svg viewBox="0 0 90 170"><g fill="#151a26">
-    <ellipse cx="45" cy="26" rx="30" ry="9" fill="#1c2230"/>
-    <ellipse cx="45" cy="19" rx="15" ry="11" fill="#1c2230"/>
-    <circle cx="45" cy="34" r="11"/>
-    <path d="M25 48 q20 -12 40 0 l9 92 q-29 12 -58 0 Z"/>
-    <path d="M31 140 l-3 26 h10 l3 -24 M59 140 l3 26 h-10 l-3 -24"/>
-    <circle cx="45" cy="60" r="2.6" fill="#d4b076"/><circle cx="45" cy="74" r="2.6" fill="#d4b076"/>
+  clara:`<svg viewBox="0 0 90 170"><g>
+    <ellipse cx="45" cy="27" rx="31" ry="10" fill="#3a2436"/>
+    <path d="M30 21 q15 -15 30 0 l2 8 h-34 Z" fill="#3a2436"/>
+    <rect x="27" y="23" width="36" height="5.5" rx="2.5" fill="#6e2a38"/>
+    <ellipse cx="45" cy="39" rx="10.5" ry="11.5" fill="#c9a284"/>
+    <path d="M34.5 34 a10.5 11.5 0 0 0 21 0 l0 -5 h-21 Z" fill="#2a1e2c" opacity=".4"/>
+    <path d="M25 53 q20 -13 40 0 l10 92 q-30 13 -60 0 Z" fill="#2e2440"/>
+    <path d="M45 53 l0 92" stroke="#221a30" stroke-width="2"/>
+    <g fill="#e6edf5"><circle cx="41" cy="58" r="1.8"/><circle cx="45" cy="59.5" r="1.8"/><circle cx="49" cy="58" r="1.8"/></g>
+    <g fill="#d4b076"><circle cx="45" cy="78" r="2.6"/><circle cx="45" cy="96" r="2.6"/></g>
+    <path d="M63 58 q9 30 5 58" stroke="#221a30" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M27 58 q-8 30 -4 58" stroke="#221a30" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M31 145 l-3 23 h11 l3 -21 M56 145 l3 23 h-11 l-3 -21" fill="#1a1420"/>
+    <path d="M64 54 q7 42 4 86" stroke="#d4b076" stroke-opacity=".25" stroke-width="2.5" fill="none"/>
   </g></svg>`,
-  reiss:`<svg viewBox="0 0 90 170"><g fill="#141924">
-    <circle cx="45" cy="26" r="12"/>
-    <g stroke="#d4b076" stroke-width="2" fill="none" opacity=".9"><circle cx="39" cy="26" r="4.6"/><circle cx="51" cy="26" r="4.6"/><line x1="43.6" y1="26" x2="46.4" y2="26"/></g>
-    <path d="M26 42 q19 -10 38 0 l6 84 h-50 Z"/>
-    <path d="M33 126 l-2 40 h9 l2 -38 M57 126 l2 40 h-9 l-2 -38"/>
-    <rect x="60" y="108" width="26" height="20" rx="4" fill="#241708" stroke="#b8935a" stroke-opacity=".6"/>
-    <path d="M66 108 q7 -8 14 0" stroke="#b8935a" fill="none" stroke-width="2.4"/>
+  reiss:`<svg viewBox="0 0 90 170"><g>
+    <path d="M32 20 q13 -10 26 0 l1 7 h-28 Z" fill="#3c4452"/>
+    <ellipse cx="45" cy="30" rx="10" ry="11" fill="#c9a284"/>
+    <path d="M35 25 a10 11 0 0 1 20 0 l0 -3 h-20 Z" fill="#3c4452"/>
+    <g stroke="#d4b076" stroke-width="2" fill="none"><circle cx="39.5" cy="30" r="4.6"/><circle cx="50.5" cy="30" r="4.6"/><line x1="44.1" y1="30" x2="45.9" y2="30"/></g>
+    <path d="M26 45 q19 -11 38 0 l6 86 h-50 Z" fill="#26303e"/>
+    <path d="M39 45 l6 8 l6 -8 l-3 -3 h-6 Z" fill="#e9e4d4"/>
+    <path d="M45 53 l0 34" stroke="#161c26" stroke-width="2.5"/>
+    <circle cx="45" cy="60" r="1.6" fill="#8fa0b8"/><circle cx="45" cy="70" r="1.6" fill="#8fa0b8"/>
+    <path d="M28 50 q-7 28 -3 54" stroke="#1c2430" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M62 50 q7 26 4 52" stroke="#1c2430" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M33 128 l-2 40 h10 l2 -38 M55 128 l2 40 h-10 l-2 -38" fill="#161c26"/>
+    <g><rect x="58" y="104" width="30" height="24" rx="5" fill="#4a2f16" stroke="#b8935a" stroke-opacity=".8" stroke-width="1.6"/>
+    <path d="M65 104 q8 -10 16 0" stroke="#b8935a" fill="none" stroke-width="2.6"/>
+    <rect x="70" y="112" width="6" height="4" rx="1" fill="#d4b076"/></g>
+    <path d="M63 46 q8 38 5 78" stroke="#d4b076" stroke-opacity=".22" stroke-width="2.5" fill="none"/>
   </g></svg>`,
-  mira:`<svg viewBox="0 0 90 170"><g fill="#161b28">
-    <circle cx="42" cy="24" r="11"/>
-    <path d="M33 16 q9 -9 18 0 q6 12 1 24 l-4 -2 q4 -10 -1 -18 q-9 -4 -14 2 Z" fill="#1e2434"/>
-    <path d="M26 40 q16 -9 32 0 l7 88 q-23 10 -46 0 Z"/>
-    <path d="M31 132 l-2 34 h9 l2 -32 M55 132 l2 34 h-9 l-2 -32"/>
-    <path d="M22 46 q20 8 40 -2 l2 8 q-22 11 -44 2 Z" fill="#3c1f28"/>
-    <g transform="rotate(-12 76 128)"><rect x="66" y="96" width="20" height="64" rx="10" fill="#241205" stroke="#b8935a" stroke-opacity=".5"/><rect x="72" y="90" width="8" height="10" rx="3" fill="#241205"/></g>
+  mira:`<svg viewBox="0 0 90 170"><g>
+    <path d="M33 18 q9 -10 19 -1 q7 11 2 25 l-4.5 -2 q4 -11 -1 -18 q-8 -4 -13 2 Z" fill="#241a12"/>
+    <ellipse cx="42" cy="27" rx="9.5" ry="10.5" fill="#c9a284"/>
+    <path d="M33 22 a9.5 10.5 0 0 1 19 0 l0 -3 h-19 Z" fill="#241a12"/>
+    <path d="M25 42 q17 -10 34 0 l8 90 q-25 11 -50 0 Z" fill="#232c2a"/>
+    <path d="M21 47 q21 9 42 -2 l2.5 9 q-23 12 -47 2 Z" fill="#6e2a38"/>
+    <path d="M42 56 l0 76" stroke="#182020" stroke-width="2"/>
+    <path d="M26 54 q-6 26 -2 50" stroke="#1a2220" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+    <path d="M58 54 q8 22 8 44" stroke="#1a2220" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+    <path d="M31 134 l-2 33 h10 l2 -31 M53 134 l2 33 h-10 l-2 -31" fill="#161e1c"/>
+    <g transform="rotate(-12 74 126)">
+      <rect x="63" y="92" width="23" height="68" rx="11" fill="#3c2410" stroke="#b8935a" stroke-opacity=".8" stroke-width="1.8"/>
+      <rect x="70" y="85" width="9" height="11" rx="3.5" fill="#3c2410"/>
+      <line x1="66" y1="112" x2="83" y2="112" stroke="#b8935a" stroke-opacity=".6" stroke-width="1.6"/>
+      <line x1="66" y1="140" x2="83" y2="140" stroke="#b8935a" stroke-opacity=".6" stroke-width="1.6"/>
+      <circle cx="74.5" cy="126" r="3" fill="#d4b076"/>
+    </g>
+    <path d="M59 44 q7 40 5 84" stroke="#d4b076" stroke-opacity=".22" stroke-width="2.5" fill="none"/>
   </g></svg>`,
-  jansen:`<svg viewBox="0 0 90 170"><g fill="#121722">
-    <path d="M29 20 q16 -10 32 0 l0 7 h-32 Z" fill="#1a2130"/>
-    <rect x="27" y="25" width="36" height="5" rx="2" fill="#0c1018"/>
-    <circle cx="45" cy="21" r="2.2" fill="#d4b076"/>
-    <circle cx="45" cy="37" r="10"/>
-    <path d="M27 50 q18 -9 36 0 l5 82 h-46 Z"/>
-    <path d="M33 132 l-2 36 h9 l2 -34 M57 132 l2 36 h-9 l-2 -34"/>
-    <g fill="#d4b076"><circle cx="45" cy="62" r="2.4"/><circle cx="45" cy="76" r="2.4"/><circle cx="45" cy="90" r="2.4"/></g>
-    <path d="M30 96 q15 8 30 0" stroke="#d4b076" fill="none" stroke-width="2" opacity=".8"/>
-    <circle cx="60" cy="100" r="3.4" fill="#d4b076"/>
+  jansen:`<svg viewBox="0 0 90 170"><g>
+    <path d="M28 18 q17 -11 34 0 l0 8 h-34 Z" fill="#22304c"/>
+    <rect x="26" y="25" width="38" height="6" rx="2.5" fill="#101724"/>
+    <rect x="28" y="24" width="34" height="2.5" fill="#6e2a38"/>
+    <circle cx="45" cy="21" r="3" fill="#d4b076"/>
+    <ellipse cx="45" cy="38" rx="10" ry="10.5" fill="#c9a284"/>
+    <path d="M35 33 a10 10.5 0 0 0 20 0 l0 -3 h-20 Z" fill="#22304c" opacity=".5"/>
+    <path d="M36 44 q9 5 18 0 l0 4 q-9 4 -18 0 Z" fill="#8a7a5a"/>
+    <path d="M26 50 q19 -10 38 0 l6 84 h-50 Z" fill="#1e2c44"/>
+    <path d="M45 54 l0 78" stroke="#121c30" stroke-width="2.5"/>
+    <g fill="#d4b076"><circle cx="45" cy="62" r="2.6"/><circle cx="45" cy="76" r="2.6"/><circle cx="45" cy="90" r="2.6"/><circle cx="45" cy="104" r="2.6"/></g>
+    <path d="M27 96 l36 0 l0 5 l-36 0 Z" fill="#12203a"/>
+    <path d="M30 98 q15 9 30 0" stroke="#d4b076" fill="none" stroke-width="2.2" opacity=".9"/>
+    <circle cx="61" cy="103" r="4" fill="#d4b076"/>
+    <path d="M28 55 q-7 26 -3 50" stroke="#16233a" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M62 55 q7 26 3 50" stroke="#16233a" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M33 134 l-2 34 h10 l2 -32 M55 134 l2 34 h-10 l-2 -32" fill="#101a2c"/>
+    <path d="M63 50 q8 40 5 84" stroke="#d4b076" stroke-opacity=".25" stroke-width="2.5" fill="none"/>
   </g></svg>`,
-  brandt:`<svg viewBox="0 0 90 170"><g fill="#141824">
-    <path d="M24 22 q21 -13 42 0 l-4 8 q-17 -8 -34 0 Z" fill="#1b2130"/>
-    <circle cx="45" cy="32" r="10"/>
-    <path d="M27 46 q18 -10 36 0 l5 84 h-46 Z"/>
-    <path d="M33 130 l-2 36 h9 l2 -34 M57 130 l2 36 h-9 l-2 -34"/>
-    <g transform="rotate(18 70 96)"><rect x="58" y="88" width="26" height="16" rx="2" fill="#d8c9a4"/><line x1="61" y1="93" x2="80" y2="93" stroke="#6b5b3f" stroke-width="1.4"/><line x1="61" y1="98" x2="80" y2="98" stroke="#6b5b3f" stroke-width="1.4"/></g>
+  brandt:`<svg viewBox="0 0 90 170"><g>
+    <path d="M22 24 q23 -14 46 0 l-4 8 q-19 -9 -38 0 Z" fill="#3a3226"/>
+    <path d="M31 19 q14 -10 28 0 l1 6 h-30 Z" fill="#3a3226"/>
+    <rect x="30" y="21" width="30" height="4" fill="#241f14"/>
+    <ellipse cx="45" cy="34" rx="9.5" ry="10" fill="#c9a284"/>
+    <path d="M35.5 29 a9.5 10 0 0 0 19 0 l0 -3 h-19 Z" fill="#241f14" opacity=".55"/>
+    <path d="M26 48 q19 -11 38 0 l6 84 h-50 Z" fill="#41382a"/>
+    <path d="M45 52 l0 76" stroke="#2c2519" stroke-width="2.5"/>
+    <rect x="27" y="92" width="36" height="6" rx="2" fill="#2c2519"/>
+    <rect x="42" y="92" width="7" height="6" rx="1" fill="#b8935a"/>
+    <path d="M28 52 q-7 24 -3 46" stroke="#332b1e" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M33 130 l-2 36 h10 l2 -34 M55 130 l2 36 h-10 l-2 -34" fill="#211b10"/>
+    <g transform="rotate(16 70 96)">
+      <rect x="56" y="86" width="30" height="19" rx="2" fill="#e6dcbc"/>
+      <rect x="58" y="88" width="12" height="4" fill="#3a2f1e"/>
+      <g stroke="#6b5b3f" stroke-width="1.3"><line x1="59" y1="96" x2="83" y2="96"/><line x1="59" y1="100" x2="83" y2="100"/></g>
+    </g>
+    <path d="M62 48 q8 38 5 80" stroke="#d4b076" stroke-opacity=".22" stroke-width="2.5" fill="none"/>
   </g></svg>`,
-  lotte:`<svg viewBox="0 0 90 170"><g fill="#161c28">
-    <circle cx="45" cy="24" r="10"/>
-    <path d="M35 14 q10 -6 20 0 l-2 8 h-16 Z" fill="#242c3c"/>
-    <path d="M28 38 q17 -9 34 0 l5 84 h-44 Z"/>
-    <path d="M35 46 q10 6 20 0 l4 62 q-14 8 -28 0 Z" fill="#cfd6de" opacity=".9"/>
-    <path d="M33 124 l-2 42 h9 l2 -40 M55 124 l2 42 h-9 l-2 -40"/>
-    <g transform="rotate(-8 20 92)"><ellipse cx="22" cy="92" rx="16" ry="5" fill="url(#gMessing)"/><rect x="14" y="82" width="6" height="9" rx="2" fill="#e9ddc0"/><rect x="24" y="80" width="6" height="11" rx="2" fill="#e9ddc0"/></g>
+  lotte:`<svg viewBox="0 0 90 170"><g>
+    <ellipse cx="45" cy="26" rx="9.5" ry="10.5" fill="#c9a284"/>
+    <path d="M34 21 q11 -12 22 0 l-2 5 q-9 -6 -18 0 Z" fill="#3c2c1a"/>
+    <path d="M36 13 q9 -5 18 0 l-1.5 6 h-15 Z" fill="#e9e4d4"/>
+    <path d="M27 40 q18 -10 36 0 l6 86 h-48 Z" fill="#242030"/>
+    <path d="M34 48 q11 7 22 0 l4.5 66 q-15 9 -31 0 Z" fill="#e2e6ea"/>
+    <path d="M34 48 q11 7 22 0" stroke="#b8bec8" fill="none" stroke-width="1.6"/>
+    <path d="M45 56 l0 58" stroke="#c4cad2" stroke-width="1.4"/>
+    <path d="M29 46 q-7 22 -3 42" stroke="#1c1826" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+    <path d="M33 128 l-2 38 h10 l2 -36 M53 128 l2 38 h-10 l-2 -36" fill="#181420"/>
+    <g transform="rotate(-8 18 90)">
+      <ellipse cx="20" cy="90" rx="18" ry="5.5" fill="url(#gMessing)"/>
+      <ellipse cx="20" cy="88.5" rx="18" ry="5.5" fill="#d4b076"/>
+      <rect x="10" y="77" width="7" height="11" rx="2.5" fill="#e9ddc0"/>
+      <rect x="21" y="74" width="7" height="14" rx="2.5" fill="#e9ddc0"/>
+      <path d="M30 80 l5 0 l-1 8 l-3 0 Z" fill="#8fa0b8" opacity=".85"/>
+    </g>
+    <path d="M62 44 q7 38 5 80" stroke="#d4b076" stroke-opacity=".22" stroke-width="2.5" fill="none"/>
   </g></svg>`
 };
 
@@ -617,7 +727,7 @@ function klik(attrs,x,y,w,h,label,klasse){
 }
 function figuur(id,x,y,schaal){
   const w=90*(schaal||1),h=170*(schaal||1);
-  return `<button class="persoon" style="${pct(x,y,w*1200/1200,h)};width:${(w/1200*100).toFixed(2)}%;min-width:52px" data-sus="${id}">
+  return `<button class="persoon" style="${pct(x,y,w*1200/1200,h)};width:${(w/1200*100).toFixed(2)}%;min-width:66px" data-sus="${id}">
     ${FIG[id]}<span class="naamkaart">${SUS[id].naam}</span></button>`;
 }
 function titelSVG(t){
@@ -645,7 +755,7 @@ const SCENES={
       ${klik('data-coupe="4"',70,150,200,392,'Coup\u00e9 4 \u2014 plaats delict','stil')}
       ${klik('data-coupe="5"',520,150,200,392,'Coup\u00e9 5 \u2014 C. Voss','stil')}
       ${klik('data-coupe="6"',970,150,200,392,'Coup\u00e9 6 \u2014 E. Brandt','stil')}
-      ${figuur('clara',330,368,1.02)}
+      ${figuur('clara',316,350,1.3)}
     </div></div>`;
   },
   /* ---- slaapwagen A: coupé 1·2·3 ---- */
@@ -666,8 +776,8 @@ const SCENES={
       ${klik('data-coupe="1"',70,150,200,392,'Coup\u00e9 1','stil')}
       ${klik('data-coupe="2"',520,150,200,392,'Coup\u00e9 2 \u2014 M. Steinbach','stil')}
       ${klik('data-coupe="3"',970,150,200,392,S.loper?'Coup\u00e9 3 \u2014 met de loper':'Coup\u00e9 3 \u2014 op slot','stil')}
-      ${figuur('mira',330,368,1.02)}
-      ${figuur('brandt',770,368,1.02)}
+      ${figuur('mira',314,350,1.3)}
+      ${figuur('brandt',760,350,1.3)}
     </div></div>`;
   },
   /* ---- restauratiewagen ---- */
@@ -746,8 +856,8 @@ const SCENES={
       ${klik('data-ev="bitterfles"',1000,140,120,140,'Fles kruidenbitter achter de bar')}
       ${klik('data-ev="medtas"',492,458,86,66,'Dokterstas \u2014 het slot is geforceerd')}
       ${klik('data-ev="tafelzes"',380,352,210,60,'Tafel zes \u2014 hier zat iemand lang alleen')}
-      ${figuur('reiss',640,368,1.02)}
-      ${figuur('lotte',806,368,1.0)}
+      ${figuur('reiss',626,350,1.3)}
+      ${figuur('lotte',798,354,1.27)}
     </div></div>`;
   },
   /* ---- dienstwagen ---- */
@@ -825,7 +935,7 @@ const SCENES={
       ${klik('data-ev="dienstregeling"',884,152,140,204,'Dienstregeling en vrachtpapieren')}
       ${klik('data-ev="telegraaf"',548,330,110,58,'Telegraaf \u2014 er komt iets binnen',S.morseKlaar?'gedaan':'')}
       ${klik('data-ev="tijdlijn"',1044,140,150,224,'Werkbord: reconstrueer de nacht','stil')}
-      ${figuur('jansen',690,368,1.02)}
+      ${figuur('jansen',678,344,1.32)}
     </div></div>`;
   },
   /* ---- bagagewagen ---- */
@@ -1619,7 +1729,7 @@ function toonEinde(){
 }
 function herstart(){
   try{localStorage.removeItem(OPSLAG);}catch(e){}
-  S={wagon:'slaapB',gevonden:[],gesteld:{},kofferOpen:false,tasKlaar:false,tijdlijnKlaar:false,loper:false,morseKlaar:false,pogingen:0,intro:false,klaar:null};
+  S={wagon:'slaapB',gevonden:[],gesteld:{},kofferOpen:false,tasKlaar:false,tijdlijnKlaar:false,loper:false,morseKlaar:false,pogingen:0,intro:false,klaar:null,boardPins:{},boardLinks:[]};
   keuze={};tlKeuze=[];slot=[0,0,0,0];morseKeuze=[null,null,null,null];
   sluitOverlay();toonIntro();renderScene();
 }
@@ -1691,11 +1801,167 @@ function planSchok(){
   setTimeout(zet,9000);
 }
 
+/* ---------------- onderzoeksbord ---------------- */
+const bord=document.getElementById('bord');
+const bordvlak=document.getElementById('bordvlak');
+const borddraden=document.getElementById('borddraden');
+const bordtray=document.getElementById('bordtray');
+let linkVan=null,sleep=null,sleepKlik=false,laatsteLink=null;
+
+function sfxCtx(){
+  try{
+    if(!audioCtx){
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC)return null;
+      audioCtx=new AC();ruisBuf=maakRuis();
+    }
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    return audioCtx;
+  }catch(e){return null;}
+}
+function sfxPapier(){
+  const c=sfxCtx();if(!c)return;
+  const src=c.createBufferSource();src.buffer=ruisBuf;src.playbackRate.value=1.7;
+  const f=c.createBiquadFilter();f.type='highpass';f.frequency.value=1400;
+  const g=c.createGain();g.gain.setValueAtTime(.22,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.12);
+  src.connect(f);f.connect(g);g.connect(c.destination);src.start();
+}
+function sfxDraad(){
+  const c=sfxCtx();if(!c)return;
+  const o=c.createOscillator();o.type='triangle';
+  o.frequency.setValueAtTime(196,c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(147,c.currentTime+.16);
+  const g=c.createGain();g.gain.setValueAtTime(.16,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.28);
+  o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.3);
+}
+
+function bordOpen(){bord.classList.add('open');renderBord();}
+function bordDicht(){bord.classList.remove('open');linkVan=null;}
+
+function renderBord(){
+  S.boardPins=S.boardPins||{};S.boardLinks=S.boardLinks||[];
+  /* pins */
+  bordvlak.querySelectorAll('.pin').forEach(p=>p.remove());
+  Object.keys(S.boardPins).forEach(id=>{
+    if(!EV[id]){delete S.boardPins[id];return;}
+    const p=S.boardPins[id];
+    const el=document.createElement('div');
+    el.className='pin'+(linkVan===id?' linking':'');
+    el.dataset.pin=id;
+    el.style.left=p.x+'%';el.style.top=p.y+'%';
+    el.style.transform='rotate('+p.r+'deg)';
+    el.innerHTML='<button class="pinx" type="button" aria-label="Van het bord halen">\u2715</button>'+
+      '<div class="pincat">'+EV[id].waar+'</div><div class="pinnaam">'+EV[id].naam+'</div>';
+    bordvlak.appendChild(el);
+  });
+  /* tray */
+  const rest=S.gevonden.filter(id=>!S.boardPins[id]);
+  if(!S.gevonden.length){
+    bordtray.innerHTML='<span class="trayleeg">NOG GEEN BEWIJS OM OP TE HANGEN</span>';
+  }else if(!rest.length){
+    bordtray.innerHTML='<span class="trayleeg">AL HET BEWIJS HANGT OP HET BORD</span>';
+  }else{
+    bordtray.innerHTML=rest.map(id=>'<button class="trayknop" type="button" data-tray="'+id+'">+ '+EV[id].naam+'</button>').join('');
+  }
+  tekenDraden();
+}
+function tekenDraden(){
+  const r=bordvlak.getBoundingClientRect();
+  const w=r.width||0,h=r.height||0;
+  let html='';
+  S.boardLinks.forEach((paar,i)=>{
+    const A=S.boardPins[paar[0]],B=S.boardPins[paar[1]];
+    if(!A||!B)return;
+    const x1=A.x/100*w+63,y1=A.y/100*h+10;
+    const x2=B.x/100*w+63,y2=B.y/100*h+10;
+    const mx=(x1+x2)/2,doorhang=26+Math.abs(x2-x1)*.14;
+    const my=(y1+y2)/2+doorhang;
+    const dpad='M'+x1.toFixed(1)+' '+y1.toFixed(1)+' Q'+mx.toFixed(1)+' '+my.toFixed(1)+' '+x2.toFixed(1)+' '+y2.toFixed(1);
+    const nieuw=laatsteLink&&laatsteLink[0]===paar[0]&&laatsteLink[1]===paar[1];
+    html+='<path class="draadhit" data-draad="'+i+'" d="'+dpad+'"/>'+
+      '<path class="draad'+(nieuw?' nieuw':'')+'" data-draad="'+i+'" d="'+dpad+'" pathLength="1"/>';
+  });
+  borddraden.innerHTML=html;
+}
+function hangOp(id){
+  S.boardPins[id]={
+    x:Math.round(8+Math.random()*66),
+    y:Math.round(10+Math.random()*58),
+    r:Math.round((Math.random()*8-4)*10)/10
+  };
+  bewaar();sfxPapier();renderBord();
+}
+function haalWeg(id){
+  delete S.boardPins[id];
+  S.boardLinks=S.boardLinks.filter(p=>p[0]!==id&&p[1]!==id);
+  if(linkVan===id)linkVan=null;
+  laatsteLink=null;bewaar();renderBord();
+}
+function linkKlik(id){
+  if(linkVan===null){linkVan=id;}
+  else if(linkVan===id){linkVan=null;}
+  else{
+    const a=linkVan,b=id;
+    const bestaat=S.boardLinks.some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a));
+    if(!bestaat){S.boardLinks.push([a,b]);laatsteLink=[a,b];bewaar();sfxDraad();}
+    linkVan=null;
+  }
+  renderBord();
+}
+/* slepen (pointer events: muis + touch) */
+bordvlak.addEventListener('pointerdown',e=>{
+  const p=e.target.closest('.pin');
+  if(!p||e.target.closest('.pinx'))return;
+  const id=p.dataset.pin,st=S.boardPins[id];
+  if(!st)return;
+  sleep={id,el:p,sx:e.clientX,sy:e.clientY,ox:st.x,oy:st.y};
+  sleepKlik=false;
+  if(p.setPointerCapture)try{p.setPointerCapture(e.pointerId);}catch(err){}
+});
+bordvlak.addEventListener('pointermove',e=>{
+  if(!sleep)return;
+  const r=bordvlak.getBoundingClientRect();
+  if(!r.width)return;
+  const dx=e.clientX-sleep.sx,dy=e.clientY-sleep.sy;
+  if(Math.abs(dx)>5||Math.abs(dy)>5)sleepKlik=true;
+  const st=S.boardPins[sleep.id];
+  st.x=Math.min(92,Math.max(0,sleep.ox+dx/r.width*100));
+  st.y=Math.min(92,Math.max(0,sleep.oy+dy/r.height*100));
+  sleep.el.style.left=st.x+'%';sleep.el.style.top=st.y+'%';
+  tekenDraden();
+});
+['pointerup','pointercancel'].forEach(evt=>bordvlak.addEventListener(evt,()=>{
+  if(sleep){bewaar();sleep=null;}
+}));
+bordvlak.addEventListener('click',e=>{
+  const x=e.target.closest('.pinx');
+  if(x){haalWeg(x.parentElement.dataset.pin);return;}
+  const dr=e.target.closest('[data-draad]');
+  if(dr){
+    S.boardLinks.splice(+dr.dataset.draad,1);
+    laatsteLink=null;bewaar();renderBord();return;
+  }
+  const p=e.target.closest('.pin');
+  if(p){
+    if(sleepKlik){sleepKlik=false;return;}
+    linkKlik(p.dataset.pin);
+  }
+});
+bordtray.addEventListener('click',e=>{
+  const t=e.target.closest('[data-tray]');
+  if(t)hangOp(t.dataset.tray);
+});
+document.getElementById('bordsluit').addEventListener('click',bordDicht);
+window.addEventListener('resize',()=>{if(bord.classList.contains('open'))tekenDraden();});
+
 /* ---------------- events ---------------- */
 document.addEventListener('click',e=>{
   const t=e.target.closest('button,[data-doc],[data-tl-kies],[data-tl-terug]');
   if(!t)return;
   if(t.id==='knop-dossier'){toonDossier();return;}
+  if(t.id==='knop-bord'){bordOpen();return;}
   if(t.id==='knop-beschuldig'){toonBeschuldiging();return;}
   if(t.id==='knop-geluid'){toggleGeluid();return;}
   if(t.id==='knop-reset'){
@@ -1741,7 +2007,10 @@ document.addEventListener('click',e=>{
   }
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&overlay.classList.contains('open'))sluitOverlay();
+  if(e.key==='Escape'){
+    if(bord.classList.contains('open')){bordDicht();return;}
+    if(overlay.classList.contains('open'))sluitOverlay();
+  }
 });
 
 /* ---------------- init ---------------- */
@@ -1764,7 +2033,8 @@ window.__NT={
   renderScene,toonDocument,toonVerhoor,stelVraag,toonDossier,
   toonKofferslot,probeerSlot,toonMedTas,kiesAmpul,toonTelegraaf,morseControle,
   kiesKoffer,toonTijdlijn,tlControle,toonBeschuldiging,beschuldig,toonEinde,herstart,
-  sluitOverlay,heeft,vind
+  sluitOverlay,heeft,vind,
+  bordOpen,bordDicht,renderBord,hangOp,haalWeg,linkKlik,tekenDraden
 };
 </script>
 </body>

@@ -985,13 +985,13 @@ body{background:#22304a}
   border:1px solid rgba(127,160,210,.3);border-radius:8px;padding:9px 16px;opacity:0;transition:opacity .5s,transform .5s;text-align:center;max-width:80vw}
 #onraadTag.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* Missiekaart: wegklikbaar */
-#missionCard{pointer-events:auto}
-#missionClose{position:absolute;top:8px;right:9px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+/* Missiekaart: wegklikbaar — !important zodat de per-ruimte geïnjecteerde SCENE_STYLE dit nooit overschrijft */
+#missionCard{pointer-events:auto!important}
+#missionClose{position:absolute;top:8px;right:9px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
   border:1px solid rgba(255,255,255,.16);border-radius:7px;background:rgba(255,255,255,.05);color:#c9d2e2;
-  font-size:16px;line-height:1;cursor:pointer;transition:all .2s;padding:0}
+  font-size:16px;line-height:1;cursor:pointer;transition:all .2s;padding:0;pointer-events:auto!important;touch-action:manipulation;z-index:3}
 #missionClose:hover{background:rgba(255,209,102,.16);border-color:rgba(255,209,102,.5);color:#ffd27d}
-#missionCard.hidden{opacity:0;transform:translateX(-14px) scale(.96);pointer-events:none}
+#missionCard.hidden{opacity:0;transform:translateX(-14px) scale(.96);pointer-events:none!important}
 </style>
 </head>
 <body class="cine">
@@ -1268,7 +1268,7 @@ const EVIDENCE={
   peuk:{n:'Sigarettenpeuk — Sobranie',c:'SPOREN · TUIN',d:'Zwart papier, gouden filter. Een exclusief merk. Nauwelijks nat.',
     long:'Sobranie Black Russian. Niemand in dit huishouden rookt. De peuk ligt onder het afdak bij de garage — droog, dus recent. Iemand stond hier te wachten. Of moed te verzamelen.'},
   wijnglazen:{n:'Twee wijnglazen',c:'SPOREN · KEUKEN',d:'Eén glas met rode wijn op het aanrecht. Eén glas afgewassen op het rek — nog nat.',
-    long:'Het slachtoffer dronk niet alleen, eerder op de avond. Iemand heeft daarna precies één glas afgewassen. Wie wist dat zijn glas hier stond — en waarom moest het schoon?'},
+    long:'Het slachtoffer dronk niet alleen, eerder op de avond. Iemand heeft daarna precies één glas afgewassen — en het rek is nog nat, dus dat gebeurde diep in de nacht. Wie hier na middernacht een glas schoonmaakte, had iets uit te wissen.'},
   dreigbrief:{n:'Verscheurde brief',c:'DOCUMENT · GARAGE',d:'Zes snippers uit de vuilnisbak. Reconstructie vereist.',
     long:'Handschrift, dik papier. Verscheurd in woede — of in paniek.',
     doneLong:'Gereconstrueerd: "Als je maandag naar de politie gaat, verlies je alles. Dertig jaar. Alles wat wij samen hebben opgebouwd. Denk na, Elias. Ik smeek je niet nog een keer. — R."'},
@@ -1310,7 +1310,7 @@ const SUSPECTS={
     basis:'Getrouwd met Elias sinds 2004. Werd zondagochtend gebeld door de huishoudster, die het lichaam vond.',
     persoonlijkheid:'Beheerst, afstandelijk. Antwoordt kort. Draagt geen trouwring meer — wel de streep in de huid.',
     alibi:'Zegt tot ±23:45 bij haar vriendin Ellen te zijn geweest en daarna direct naar bed te zijn gegaan zonder Elias te zien.',
-    geheimen:[{req:'smsjes',t:'Onderhoudt in het geheim contact met een zekere "S." — een relatie die Elias niet mocht kennen.'},
+    geheimen:[{req:'smsjes',t:'Onderhoudt in het geheim contact met een zekere "S." — een relatie die Elias niet mocht kennen. Het nummer achter "S." straalde die hele avond en nacht een zendmast in Utrecht aan: wie "S." ook is, hij was hier niet.'},
               {req:'dagboek',t:'Vermoedde dat Elias "iets wist" en dat er maandag iets zou veranderen — voor "iedereen die dacht mij te kunnen bedriegen".'}],
     contradicties:[{req:'smsjes',t:'Haar 22:40-bericht "Ik ben bij Ellen" is buitenshuis verstuurd — ver van de villa. Haar alibi houdt, hoe graag je er ook aan wilt trekken.'}],
     motief:[{req:'agenda',t:'Elias wilde maandag zijn testament wijzigen. Bij een scheiding wegens overspel zou zij vrijwel alles verliezen.'}]},
@@ -1321,6 +1321,7 @@ const SUSPECTS={
     geheimen:[{req:'certificaten',t:'Verkocht ten minste zes vervalste werken via de galerie — een fraude van miljoenen.'},
               {req:'treinticket',t:'Betaalde restaurator Dana Voss privé voor "restauratie extern" — de vervalsingen zelf.'}],
     contradicties:[{req:'voicemail',t:'"Alleen thuis" — maar om 22:31 sprak hij in op de vaste lijn: "Ik kom er nu aan."'},
+                   {req:'wijnglazen',t:'Eén glas afgewassen, diep in de nacht — het rek is nog nat. Hij wiste sporen uit in paniek en pakte het verkeerde glas: dat van Thomas, van uren eerder. Wie niets te verbergen heeft, wast om die tijd geen afwas van een ander.'},
                    {req:'peuk',t:'Zijn merk sigaretten, droog onder het afdak — daar stond iemand ná het invallen van de regen.'},
                    {req:'bandenspoor',t:'Een breed sportwagenspoor over de eerste regen heen. Zijn wagen. Zijn banden.'}],
     motief:[{req:'conceptbrief',t:'Elias zou hem maandag aangeven bij de recherche. Dertig jaar, reputatie, vermogen, vrijheid — alles zou verdampen.'}]},
@@ -1335,8 +1336,8 @@ const SUSPECTS={
   thomas:{naam:'Thomas Verhoeven',rol:'ZOON · 27',
     basis:'Enig kind uit Elias\' eerste huwelijk. Gokschulden. Kwam zaterdagavond langs "om te praten".',
     persoonlijkheid:'Opvliegend, daarna spijt. Nagels afgekloven. Draagt sneakers, maat 43.',
-    alibi:'Was er van ±20:30 tot 21:40. Taxi-app toont een rit om 21:40 naar de binnenstad; pinbetaling in café Vertigo om 22:15, camerabeelden tot sluitingstijd.',
-    geheimen:[{req:'wijnglazen',t:'Het tweede wijnglas was van hem — het gesprek over geld liep hoog op, maar hij vertrok. Waarom zou híj het dan afwassen? Hij was al uren weg.'}],
+    alibi:'Was er van ±20:30 tot 21:40. Taxi-app toont een rit om 21:40 naar de binnenstad; pinbetaling in café Vertigo om 22:15, camerabeelden tot sluitingstijd om 01:30 — ruim voorbij 23:14.',
+    geheimen:[{req:'wijnglazen',t:'Het tweede wijnglas was van hem — het gesprek over geld liep hoog op, maar hij vertrok om 21:40. Het glas is pas diep in de nacht afgewassen: het rek is nog nat. Dat kan hij niet zijn geweest — hij was al uren aantoonbaar elders.'}],
     contradicties:[],
     motief:[{req:'agenda',t:'Schulden en een vader die "geen cent meer" gaf. Maar zijn avond is sluitend gedocumenteerd vanaf 21:40.'}]}
 };
@@ -1496,7 +1497,7 @@ const SCENE_STYLE=`<style>
 #startBtn{background:linear-gradient(135deg,rgba(255,209,102,.18),rgba(255,78,99,.14));border-color:rgba(255,209,102,.65);box-shadow:0 0 24px rgba(255,209,102,.11)}
 #gameHud{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:82;display:none;gap:8px;align-items:stretch;font-family:var(--mono);pointer-events:none;width:min(760px,94vw)}
 #gameHud.on{display:flex}.hudChip{flex:1;min-width:0;background:linear-gradient(180deg,rgba(17,25,43,.86),rgba(8,12,22,.82));border:1px solid rgba(111,227,255,.22);border-radius:14px;padding:9px 10px;box-shadow:0 14px 40px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.04) inset}.hudChip .hl{font-size:8px;letter-spacing:.18em;color:#7f91b4;white-space:nowrap}.hudChip .hv{margin-top:4px;font-size:12px;letter-spacing:.08em;color:#fff3d3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hudChip.danger{border-color:rgba(255,78,99,.38)}.hudChip.good{border-color:rgba(103,240,160,.35)}.miniBar{height:5px;margin-top:7px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden}.miniBar span{display:block;height:100%;width:0%;border-radius:9px;background:linear-gradient(90deg,var(--gold),#ff8d3d,var(--danger));transition:width .45s ease}.hudChip.good .miniBar span{background:linear-gradient(90deg,var(--casegreen),#6fe3ff)}
-#missionCard{position:fixed;left:16px;top:calc(88px + env(safe-area-inset-top,0px));z-index:81;width:min(310px,88vw);background:linear-gradient(180deg,rgba(18,28,49,.90),rgba(8,12,22,.86));border:1px solid rgba(255,209,102,.30);border-radius:18px;padding:14px 15px;box-shadow:0 18px 60px rgba(0,0,0,.48);pointer-events:none;transition:opacity .35s, transform .35s;opacity:.96}.missionTitle{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--gold);margin-bottom:8px}.missionText{font-size:13px;line-height:1.45;color:#e9e4d6}.missionSteps{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.missionSteps div{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:#aeb9d0;border:1px solid rgba(174,185,208,.18);border-radius:10px;padding:7px;background:rgba(255,255,255,.035)}.missionSteps div.done{color:#baf8d0;border-color:rgba(103,240,160,.35);background:rgba(103,240,160,.06)}
+#missionCard{position:fixed;left:16px;top:calc(88px + env(safe-area-inset-top,0px));z-index:81;width:min(310px,88vw);background:linear-gradient(180deg,rgba(18,28,49,.90),rgba(8,12,22,.86));border:1px solid rgba(255,209,102,.30);border-radius:18px;padding:14px 15px;box-shadow:0 18px 60px rgba(0,0,0,.48);pointer-events:auto;transition:opacity .35s, transform .35s;opacity:.96}.missionTitle{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--gold);margin-bottom:8px}.missionText{font-size:13px;line-height:1.45;color:#e9e4d6}.missionSteps{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.missionSteps div{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:#aeb9d0;border:1px solid rgba(174,185,208,.18);border-radius:10px;padding:7px;background:rgba(255,255,255,.035)}.missionSteps div.done{color:#baf8d0;border-color:rgba(103,240,160,.35);background:rgba(103,240,160,.06)}
 #rewardStamp{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg) scale(.72);z-index:170;pointer-events:none;opacity:0;font-family:var(--mono);font-weight:bold;letter-spacing:.18em;text-align:center;color:#120b04;background:linear-gradient(135deg,#ffd166,#ff8d3d);border:3px solid rgba(255,242,200,.85);border-radius:18px;padding:20px 26px;box-shadow:0 28px 90px rgba(255,141,61,.35),0 0 0 999px rgba(0,0,0,.20);text-transform:uppercase}.rewardShow{animation:rewardPop 1.15s cubic-bezier(.2,1.25,.3,1) both}@keyframes rewardPop{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(.4)}18%,72%{opacity:1;transform:translate(-50%,-50%) rotate(-6deg) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) rotate(-3deg) scale(1.22)}}
 .evCard{position:relative;overflow:hidden}.evCard::after{content:'VEILIGGESTELD';position:absolute;right:-30px;top:10px;transform:rotate(24deg);font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:rgba(255,209,102,.55);border:1px solid rgba(255,209,102,.28);padding:4px 26px;background:rgba(255,209,102,.06)}
 .hotspot{filter:drop-shadow(0 0 10px rgba(255,209,102,.08))}.hotspot:hover{filter:brightness(1.35) drop-shadow(0 0 16px rgba(255,209,102,.24))}.doorspot{filter:drop-shadow(0 0 10px rgba(111,227,255,.10))}

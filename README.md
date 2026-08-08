@@ -1,4 +1,4 @@
-# Het Archief
+# Het Nachtdossier
 
 Een schil rond losse interactieve moordmysteries. Elke zaak is een op zichzelf staand HTML-bestand; `index.html` is alleen de recherchekamer die ernaar linkt.
 

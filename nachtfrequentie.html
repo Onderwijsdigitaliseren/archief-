@@ -764,8 +764,8 @@ const SUS={
     fx:()=>{note('Marja leerde Eva het bandarchief én de decks bedienen. "Ze wilde het leren voor het verdween."');flag('evaKanBanden');}}
   ],
   react:{
-   schriftje:{txt:'<em>Ze wordt grauw als ze haar eigen handschrift ziet.</em> "Goed dan. Ik rook. Elke nacht om 02:40, op de brandtrap, één sigaret, kwartiertje. Ruben wist het. Iederéén hier weet het. Toen ik terugkwam liep deck 2 en dacht ik dat Rúben een band had gestart. Dat deed hij nooit. Ik had het moeten checken. Ik had het moeten chécken."',
-    fx:()=>{note('Marja bekent: 02:40–02:55 weg (rookpauze, vast patroon dat iedereen kende). Deck 2 liep al toen ze terugkwam.');tl('02:40','Marja verlaat de regie voor haar vaste rookpauze — het gebouw wist ervan.','Verhoor Marja');tl('02:55','Marja terug in de regie; deck 2 draait al.','Verhoor Marja');flag('marjaGat');}},
+   schriftje:{txt:'<em>Ze wordt grauw als ze haar eigen handschrift ziet.</em> "Goed dan. Ik rook. Elke nacht om 02:40, op de brandtrap, één sigaret, kwartiertje. Ruben wist het. Iederéén hier weet het." <em>Ze aarzelt, alsof ze iets afweegt, en gaat dan toch verder.</em> "En eerlijk — die avond was ik al even eerder weg. Ik liep rond half drie nog snel naar de kantine voor koffie, twee minuutjes maar, dat schríjf je niet eens op, dat doet iedereen constant. Toen ik terugkwam liep deck 2 en dacht ik dat Rúben een band had gestart. Dat deed hij nooit. Ik had het moeten checken. Ik had het moeten chécken."',
+    fx:()=>{note('Marja bekent twee gaten: een kort koffiemoment rond 02:29 (ongelogd, iedereen doet het) en haar vaste rookpauze 02:40–02:55. Vanaf 02:29 was de regie al onbewaakt.');tl('02:29','Marja loopt kort naar de kantine voor koffie — twee minuten, nergens genoteerd.','Verhoor Marja');tl('02:40','Marja verlaat de regie voor haar vaste rookpauze — het gebouw wist ervan.','Verhoor Marja');tl('02:55','Marja terug in de regie; deck 2 draait al.','Verhoor Marja');flag('marjaGat');}},
    log:{txt:'"DECK 2 als bron, gemarkeerd als live..." <em>Ze staart naar de uitdraai.</em> "Dit is geen fout. Dit is vákwerk. Wie dit deed, kende de tafel. En wist precies wanneer ík er niet zou zijn."'},
    dat084:{txt:'"Die band ken ik niet. En ik ken ze állemaal, rechercheur. DAT-084 is een reservenummer — leeg, hoort leeg te zijn. Iemand heeft er een oude Late Lijn op gezet. Met míjn apparatuur."'}
   }},
@@ -1662,7 +1662,7 @@ function tapePuzzle(){
       ovl(`<div class="ovlHead"><div class="ovlKick">Vergelijking voltooid</div><div class="ovlTitle">Het kwartier was band</div></div>
       <div class="ovlBody"><div class="ovlTxt">Fragment C dekt de "live"-uitzending van 02:37 tot op de golf nauwkeurig. Geen toeval, geen echo — dezelfde opname.<br><br>
       Van <b>02:30 tot 02:56</b> zond Radio Helder een oude nacht uit alsof het deze was. In die zesentwintig minuten had de moordenaar Studio B voor zichzelf — en een hele stad als onwetende getuige van een alibi.<br><br>
-      <em>Wie dit bouwde, moest drie dingen kunnen: banden vinden in het archief, decks bedienen in de regie, en weten dat Marja om 02:40 zou gaan roken. Wie in dit gebouw heeft dat allemaal geleerd — en van wie?</em></div>
+      <em>Wie dit bouwde, moest drie dingen kunnen: banden vinden in het archief, decks bedienen in de regie, en weten dat de regie rond half drie sowieso even onbewaakt zou zijn — koffie, een sigaret, het maakte niet uit welke. Wie in dit gebouw heeft dat allemaal geleerd — en van wie?</em></div>
       <div class="ovlBtns"><button class="gBtn" id="tapeOk">Noteer de conclusie</button></div></div>`);
       $('#tapeOk').addEventListener('click',()=>{
         note('DOORBRAAK — de uitzending van 02:30–02:56 was band DAT-084. De moordenaar creëerde een venster van 26 minuten en een vals alibi voor de hele stad.');

@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title>NACHTTREIN 212 — Amsterdam · Wenen</title>
 <style>
 :root{
@@ -31,11 +31,14 @@ body{
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
 }
-#app{height:100vh;height:100dvh;display:flex;flex-direction:column}
+#app{position:fixed;inset:0;display:flex;flex-direction:column}
 /* ---------- kop ---------- */
 #kop{
-  flex:0 0 auto;display:flex;align-items:baseline;gap:14px;
+  flex:0 0 auto;display:flex;align-items:baseline;gap:14px;row-gap:6px;flex-wrap:wrap;
   padding:10px 18px 8px;
+  padding-left:max(18px,env(safe-area-inset-left));
+  padding-right:max(18px,env(safe-area-inset-right));
+  padding-top:max(10px,env(safe-area-inset-top));
   background:linear-gradient(180deg,#131b2c 0%,var(--nacht) 100%);
   border-bottom:1px solid rgba(184,147,90,.35);
 }
@@ -45,7 +48,7 @@ body{
   text-transform:uppercase;white-space:nowrap;
 }
 #kop .route{font-size:11px;color:#8fa0b8;letter-spacing:.12em}
-#kop .rechts{margin-left:auto;display:flex;gap:8px;align-items:center}
+#kop .rechts{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 #klok{
   font-size:14px;color:var(--papier);
   border:1px solid rgba(184,147,90,.45);
@@ -145,9 +148,17 @@ body{
   padding:2px 8px;border-radius:2px;white-space:nowrap;text-transform:uppercase;
 }
 /* coupé-interieur in overlay */
-.coupescene{position:relative;width:100%;aspect-ratio:700/360;margin-top:12px}
-.coupescene>svg{position:absolute;inset:0;width:100%;height:100%;display:block;border:1px solid rgba(184,147,90,.4);border-radius:3px;background:#0b0f1a}
+.coupescroll{position:relative;width:100%;margin-top:12px;overflow-x:auto;overflow-y:hidden;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  border:1px solid rgba(184,147,90,.4);border-radius:3px;background:#0b0f1a}
+.coupescroll::-webkit-scrollbar{display:none}
+.coupescene{position:relative;width:100%;aspect-ratio:700/360}
+.coupescene>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .coupescene .klik{min-width:38px;min-height:38px}
+@media (max-width:560px){
+  .coupescroll{height:min(52dvh,330px)}
+  .coupescene{height:100%;width:auto;min-width:100%}
+}
 .coupetekst{margin-top:12px}
 /* melding */
 #melding{
@@ -162,7 +173,11 @@ body{
 /* ---------- treinnav ---------- */
 #treinnav{
   flex:0 0 auto;display:flex;align-items:flex-end;gap:4px;
-  padding:8px 14px 12px;overflow-x:auto;
+  padding:8px 14px 12px;
+  padding-bottom:max(12px,env(safe-area-inset-bottom));
+  padding-left:max(14px,env(safe-area-inset-left));
+  padding-right:max(14px,env(safe-area-inset-right));
+  overflow-x:auto;
   background:linear-gradient(180deg,var(--nacht) 0%,#060910 100%);
   border-top:1px solid rgba(184,147,90,.3);
   scrollbar-width:thin;
@@ -198,7 +213,7 @@ body{
 }
 #overlay.open{display:flex}
 #overlaybox{
-  width:min(700px,94vw);max-height:88vh;overflow-y:auto;
+  width:min(700px,94vw);max-height:min(88vh,88dvh);overflow-y:auto;
   background:linear-gradient(180deg,#121826 0%,#0b0f1a 100%);
   border:1px solid rgba(184,147,90,.55);border-radius:3px;
   padding:22px 24px 26px;position:relative;
@@ -1211,7 +1226,7 @@ const COUPES={
       </g>
       <g fill="#3d2f1c"><rect x="60" y="36" width="96" height="30" rx="7" transform="rotate(-3 108 51)"/></g>`,
       {donker:.42,raamdelay:5});
-    return `<div class="coupescene">${svg}</div>
+    return `<div class="coupescroll"><div class="coupescene">${svg}</div></div>
       <p class="introtekst coupetekst">De heer Aalbers slaapt sinds Utrecht en zal, naar het zich laat aanhoren, tot Wenen slapen. Zelfs de wisselklappen halen hem niet terug. Hier valt niets te halen.</p>`;
   }},
   '2':{titel:'Coup\u00e9 2 \u2014 M. Steinbach',html:()=>{
@@ -1240,11 +1255,11 @@ const COUPES={
       <!-- notenbalk aan de wand -->
       <g stroke="#d8c9a4" stroke-opacity=".28" fill="none"><path d="M56 96 h140 M56 104 h140 M56 112 h140 M56 120 h140"/><circle cx="96" cy="108" r="4" fill="#d8c9a4" opacity=".3"/><circle cx="140" cy="116" r="4" fill="#d8c9a4" opacity=".3"/></g>`,
       {raamdelay:3});
-    return `<div class="coupescene">${svg}<div class="kliklaag">
+    return `<div class="coupescroll"><div class="coupescene">${svg}<div class="kliklaag">
         ${S.kofferOpen?klikC('data-ev="flesje"',186,196,140,66,'Vioolkist \u2014 geopend'):klikC('data-actie="kofferslot"',228,150,72,156,'Vioolkist \u2014 cijferslot')}
         ${klikC('data-ev="brief_vader"',70,250,92,52,'Reistas doorzoeken')}
         ${klikC('data-ev="programma"',472,192,102,38,'Papieren op het tafeltje')}
-      </div></div>
+      </div></div></div>
       <p class="introtekst coupetekst">Ordelijk, bijna kaal. Alleen de vioolkist heeft gewicht in deze ruimte \u2014 alsof al het andere er slechts omheen reist.</p>`;
   }},
   '3':{titel:'Coup\u00e9 3',html:()=>{
@@ -1266,9 +1281,9 @@ const COUPES={
         <g fill="#d4b076"><circle cx="45" cy="62" r="2.4"/><circle cx="45" cy="76" r="2.4"/></g>
       </g>`,
       {donker:.3,raamdelay:6,kleedje:false});
-    return `<div class="coupescene">${svg}<div class="kliklaag">
+    return `<div class="coupescroll"><div class="coupescene">${svg}<div class="kliklaag">
         ${klikC('data-ev="mantel"',80,252,240,50,'Onder de bank kijken')}
-      </div></div>
+      </div></div></div>
       <p class="introtekst coupetekst">Jansen blijft in de deuropening staan. De coup\u00e9 ruikt naar koude lucht en iets bitters. Het bed is onaangeroerd \u2014 maar onder de bank is de schaduw n\u00e9t te diep.</p>`;
   }},
   '4':{titel:'Coup\u00e9 4 \u2014 plaats delict',html:()=>{
@@ -1299,11 +1314,11 @@ const COUPES={
       <!-- omgevallen horloge -->
       <g transform="rotate(24 462 224)"><circle cx="462" cy="224" r="9" fill="url(#gMessing)"/><circle cx="462" cy="224" r="6" fill="#e9ddc0"/><line x1="462" y1="224" x2="462" y2="219" stroke="#3a2f1e" stroke-width="1.4"/><line x1="462" y1="224" x2="466" y2="224" stroke="#3a2f1e" stroke-width="1.2"/><path d="M471 224 q10 4 14 12" stroke="url(#gMessing)" stroke-width="2.4" fill="none"/></g>`,
       {donker:.14,raamdelay:1});
-    return `<div class="coupescene">${svg}<div class="kliklaag">
+    return `<div class="coupescroll"><div class="coupescene">${svg}<div class="kliklaag">
         ${klikC('data-ev="lichaam"',44,120,180,116,'Het slachtoffer onderzoeken')}
         ${klikC('data-ev="glas"',488,186,54,48,'Het borrelglas')}
         ${klikC('data-ev="telegram"',640,150,58,124,'De jas aan de haak')}
-      </div></div>
+      </div></div></div>
       <p class="introtekst coupetekst">Het is stil op de manier waarop alleen een plaats delict stil kan zijn. Hendrik Voss zit nog half overeind, alsof de dood hem midden in een gedachte trof.</p>`;
   }},
   '5':{titel:'Coup\u00e9 5 \u2014 C. Voss',html:()=>{
@@ -1319,9 +1334,9 @@ const COUPES={
       <g><rect x="486" y="196" width="16" height="26" rx="4" fill="#7a4a8a" opacity=".85"/><circle cx="494" cy="192" r="5" fill="url(#gMessing)"/>
       <path d="M516 214 q16 -10 34 -2 l-2 10 q-16 -6 -32 2 Z" fill="#cfd6de" opacity=".85"/><path d="M540 208 l6 -12 m-2 12 l7 -10" stroke="#cfd6de" stroke-width="3" opacity=".85"/></g>`,
       {raamdelay:4});
-    return `<div class="coupescene">${svg}<div class="kliklaag">
+    return `<div class="coupescroll"><div class="coupescene">${svg}<div class="kliklaag">
         ${klikC('data-ev="testament"',66,26,110,46,'Documentenmap in het bagagenet')}
-      </div></div>
+      </div></div></div>
       <p class="introtekst coupetekst">Parfum, een opengeslagen roman, een necessaire van krokodillenleer. Clara Voss wacht in de gang; haar coup\u00e9 spreekt intussen voor haar.</p>`;
   }},
   '6':{titel:'Coup\u00e9 6 \u2014 E. Brandt',html:()=>{
@@ -1338,10 +1353,10 @@ const COUPES={
       <!-- jas die naar gangtocht ruikt -->
       <g><path d="M672 160 q-22 10 -26 46 q-2 30 8 56 l34 0 q8 -26 6 -56 q-4 -36 -22 -46 Z" fill="#2a3040"/></g>`,
       {raamdelay:2.4});
-    return `<div class="coupescene">${svg}<div class="kliklaag">
+    return `<div class="coupescroll"><div class="coupescene">${svg}<div class="kliklaag">
         ${klikC('data-ev="notitieboek"',158,116,96,44,'Onder het matras')}
         ${klikC('data-ev="opdrachtbrief"',84,244,132,66,'De koffer doorzoeken')}
-      </div></div>
+      </div></div></div>
       <p class="introtekst coupetekst">Een handelsreiziger zonder monsters, zonder catalogus. Wel: een verrekijker, drie kranten en een jas die naar gangtocht ruikt.</p>`;
   }}
 };
@@ -1374,6 +1389,11 @@ function toonOverlay(html){
   overlay.classList.add('open');
   const f=overlayinhoud.querySelector('button,input,[tabindex]');
   if(f)f.focus();
+  (window.requestAnimationFrame||function(cb){setTimeout(cb,16);})(()=>{
+    overlayinhoud.querySelectorAll('.coupescroll').forEach(sc=>{
+      if(sc.scrollWidth>sc.clientWidth+4)sc.scrollLeft=(sc.scrollWidth-sc.clientWidth)/2;
+    });
+  });
 }
 function sluitOverlay(){overlay.classList.remove('open');}
 function toonDocument(id){

@@ -210,6 +210,82 @@ body.lamp-aan .dossier{opacity:1;transform:rotate(var(--rot,0deg)) translateY(0)
 .dossier.leeg .zaaknr{color:rgba(217,188,130,.5)}
 .dossier.leeg .zaaktitel{border-bottom-color:rgba(217,188,130,.25);color:rgba(217,188,130,.65)}
 .dossier.leeg .zaakomschrijving{color:rgba(217,188,130,.45)}
+/* koffiekas — notitiebriefje onder de dossiers */
+#koffiekas{
+  position:relative;
+  z-index:2;
+  width:min(460px,100%);
+  margin:9vh auto 0;
+  background:linear-gradient(177deg, var(--papier) 0%, #dccfaa 100%);
+  border:1px solid rgba(0,0,0,.3);
+  box-shadow:0 14px 30px rgba(0,0,0,.5), inset 0 0 32px rgba(120,95,40,.10);
+  padding:26px 28px 24px;
+  transform:rotate(.7deg);
+  text-align:center;
+  opacity:0;
+  transition:opacity 1.2s ease 1.1s;
+}
+body.lamp-aan #koffiekas{opacity:1}
+#koffiekas .kring{
+  position:absolute;
+  top:-16px;right:22px;
+  width:56px;height:56px;
+  border-radius:50%;
+  border:7px solid rgba(94,62,28,.28);
+  filter:blur(.4px);
+  transform:rotate(-8deg) scaleX(1.05);
+  pointer-events:none;
+}
+#koffiekas .kring::after{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border-radius:50%;
+  border:2px solid rgba(94,62,28,.18);
+}
+.kkTitel{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--inkt);
+}
+.kkTekst{
+  margin-top:12px;
+  font-size:13px;
+  line-height:1.7;
+  color:#4a3d28;
+}
+#kkKnop{
+  display:inline-block;
+  margin-top:16px;
+  padding:11px 22px;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--papier);
+  background:linear-gradient(180deg, #a0362c, var(--stempel));
+  border:1px solid rgba(0,0,0,.35);
+  border-radius:3px;
+  box-shadow:0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+#kkKnop:hover,#kkKnop:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(0,0,0,.5), 0 0 30px rgba(142,42,34,.25), inset 0 1px 0 rgba(255,255,255,.2);
+}
+#kkKnop:focus-visible{outline:2px dashed var(--stempel);outline-offset:4px}
+.kkKlein{
+  margin-top:13px;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#8a744c;
+}
+@media (prefers-reduced-motion:reduce){#koffiekas{transition:none}}
 /* voetregel */
 #voet{
   position:relative;
@@ -243,10 +319,23 @@ body.lamp-aan .dossier{opacity:1;transform:rotate(var(--rot,0deg)) translateY(0)
     <div class="regel">De lamp brandt. De dossiers liggen klaar. Wie een map opent, neemt de zaak over &mdash; met alles wat daarbij hoort.</div>
   </header>
   <section id="dossiers" aria-label="Dossiers"></section>
+  <section id="koffiekas" aria-label="Steun het archief" hidden>
+    <div class="kring"></div>
+    <div class="kkTitel">Koffiekas van de nachtdienst</div>
+    <div class="kkTekst">Dit archief draait op late uren en sterke koffie. Vond je een zaak de moeite waard? Een kop koffie voor de nachtdienst houdt de lamp aan.</div>
+    <a id="kkKnop" href="#" target="_blank" rel="noopener">&#9749; Zet een koffie klaar</a>
+    <div class="kkKlein">Vrijwillig &middot; via Ko-fi &middot; het archief blijft altijd gratis</div>
+  </section>
   <div id="voet">Het nachtdossier blijft open &middot; nieuwe zaken worden bijgeschreven</div>
 </main>
 <script>
 "use strict";
+/* ================================================================
+   DONATIE — koffiekas-link (Ko-fi, Stripe Payment Link, enz.).
+   Leeg laten = koffiekas blijft verborgen.
+   ================================================================ */
+const KOFFIE_LINK = "https://ko-fi.com/kellievdk";
+
 /* ================================================================
    ZAKEN — voeg hier een zaak toe: één object, klaar.
    bestand = relatief pad naar het losse html-bestand (GitHub Pages).
@@ -313,6 +402,11 @@ window.ZAKEN = ZAKEN;
 
 document.addEventListener("DOMContentLoaded", function(){
   renderArchief();
+  var kas = document.getElementById("koffiekas");
+  if (KOFFIE_LINK && /^https:\/\//.test(KOFFIE_LINK)) {
+    document.getElementById("kkKnop").href = KOFFIE_LINK;
+    kas.hidden = false;
+  }
   requestAnimationFrame(function(){
     setTimeout(function(){ document.body.classList.add("lamp-aan"); }, 120);
   });

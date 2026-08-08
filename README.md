@@ -20,3 +20,7 @@ Open `index.html`, zoek de `ZAKEN`-array bovenin de `<script>` en voeg één obj
 ```
 
 Zet het bijbehorende `.html`-bestand ernaast. Klaar.
+
+## Koffiekas (donaties)
+De koffiekas onderaan de pagina wijst naar `https://ko-fi.com/kellievdk`.
+Wil je ooit een andere link (bijv. een Stripe Payment Link)? Open `index.html`, zoek `KOFFIE_LINK` bovenin de script-sectie en vervang de URL. Leeg laten = koffiekas onzichtbaar.
